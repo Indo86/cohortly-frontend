@@ -1,0 +1,11 @@
+<script setup>
+import ProfileSummary from '@/components/account/ProfileSummary.vue'
+import PageHeader from '@/components/ui/PageHeader.vue'
+</script>
+
+<template>
+  <div>
+    <PageHeader title="Profile" description="Your account and subscription." />
+    <ProfileSummary access-label="Subscription" />
+  </div>
+</template>

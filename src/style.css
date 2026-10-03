@@ -1,0 +1,330 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------------------------------
+   Design tokens. RGB triplets so Tailwind can add opacity (see tailwind.config.js).
+   Every foreground/background pair used in the product was checked against WCAG AA with a
+   script (see README, "Contrast"): text >= 4.5:1, control borders / focus / progress >= 3:1.
+   ------------------------------------------------------------------------------------------ */
+:root {
+  /* neutral scale */
+  --c-canvas: 248 250 252;
+  --c-surface: 255 255 255;
+  --c-surface-muted: 241 245 249;
+  --c-line: 226 232 240;
+  --c-line-control: 118 130 148; /* input / button borders: 3.9:1 on white */
+  --c-ink: 15 23 42;
+  --c-ink-soft: 51 65 85;
+  --c-ink-muted: 71 85 105;
+
+  /* brand (indigo) */
+  --c-primary: 79 70 229;
+  --c-primary-hover: 67 56 202;
+  --c-primary-soft: 224 231 255;
+  --c-primary-faint: 238 242 255;
+  --c-primary-strong: 55 48 163;
+
+  /* semantic */
+  --c-success: 4 120 87;
+  --c-success-soft: 209 250 229;
+  --c-success-strong: 6 78 59;
+  --c-warning: 180 83 9;
+  --c-warning-soft: 254 243 199;
+  --c-warning-strong: 120 53 15;
+  --c-danger: 185 28 28;
+  --c-danger-soft: 254 226 226;
+  --c-danger-strong: 127 29 29;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+
+  /* one clearly visible keyboard focus indicator everywhere (6.3:1 on white) */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-primary));
+    outline-offset: 2px;
+  }
+
+  /* elements that are focused by code (page heading after navigation, skip-link target, lesson
+     title) are not tab stops, so they need no ring */
+  main:focus,
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+
+  ::placeholder {
+    color: rgb(var(--c-ink-muted));
+    opacity: 0.8;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+   Type scale. Pages use these names instead of ad-hoc size/weight/colour combinations.
+   ------------------------------------------------------------------------------------------ */
+@layer components {
+  .type-page-title {
+    @apply text-2xl font-bold leading-8 tracking-tight text-ink;
+  }
+
+  .type-section-title {
+    @apply text-lg font-semibold leading-7 text-ink;
+  }
+
+  .type-card-title {
+    @apply text-base font-semibold leading-6 text-ink;
+  }
+
+  .type-body {
+    @apply text-sm leading-6 text-ink-soft;
+  }
+
+  .type-meta {
+    @apply text-sm leading-5 text-ink-muted;
+  }
+
+  .type-label {
+    @apply text-sm font-medium leading-5 text-ink;
+  }
+
+  .type-help {
+    @apply text-xs leading-5 text-ink-muted;
+  }
+
+  .type-error {
+    @apply text-sm leading-5 text-danger;
+  }
+
+  .type-eyebrow {
+    @apply text-xs font-semibold uppercase leading-4 tracking-wide text-ink-muted;
+  }
+
+  /* the "← Back to ..." link above a page title: a full-size tap target */
+  .back-link {
+    @apply -ml-1 inline-flex min-h-[2.75rem] items-center rounded-control px-1 text-sm font-semibold text-primary-hover underline underline-offset-2 hover:text-primary-strong;
+  }
+
+  .type-link {
+    @apply font-semibold text-primary-hover underline underline-offset-2 hover:text-primary-strong;
+  }
+
+  /* ----- surfaces ----- */
+  .card {
+    @apply rounded-card border border-line bg-surface shadow-card;
+  }
+
+  /* a list item that is a card (course, student, learner) */
+  .card-row {
+    @apply card p-4;
+  }
+
+  /* ----- form controls (input, select, textarea): one look, validation from aria-invalid ----- */
+  .field-control {
+    @apply min-h-[2.75rem] w-full rounded-control border border-line-control bg-surface px-3 py-2 text-base text-ink transition-colors sm:text-sm;
+  }
+
+  .field-control:hover:not(:disabled) {
+    @apply border-ink-muted;
+  }
+
+  .field-control:disabled {
+    @apply cursor-not-allowed bg-surface-muted text-ink-muted;
+  }
+
+  .field-control[aria-invalid='true'] {
+    @apply border-danger;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+   Lesson reading typography: backend-sanitized HTML (headings h2-h4, paragraphs, bold /
+   italic, links, lists, blockquotes, tables). Only what the sanitizer allows is styled.
+   ------------------------------------------------------------------------------------------ */
+@layer components {
+  .lesson-prose {
+    @apply break-words text-base leading-8 text-ink-soft;
+  }
+
+  .lesson-prose > :first-child {
+    @apply mt-0;
+  }
+
+  .lesson-prose > * + * {
+    @apply mt-5;
+  }
+
+  .lesson-prose h2 {
+    @apply mt-10 text-2xl font-bold leading-9 tracking-tight text-ink;
+  }
+
+  .lesson-prose h3 {
+    @apply mt-8 text-xl font-semibold leading-8 text-ink;
+  }
+
+  .lesson-prose h4 {
+    @apply mt-6 text-base font-semibold leading-7 text-ink;
+  }
+
+  .lesson-prose strong,
+  .lesson-prose b {
+    @apply font-semibold text-ink;
+  }
+
+  .lesson-prose a {
+    @apply font-medium text-primary-hover underline underline-offset-2 hover:text-primary-strong;
+  }
+
+  .lesson-prose ul {
+    @apply list-disc space-y-2 pl-7;
+  }
+
+  .lesson-prose ol {
+    @apply list-decimal space-y-2 pl-7;
+  }
+
+  .lesson-prose li::marker {
+    @apply text-ink-muted;
+  }
+
+  .lesson-prose blockquote {
+    @apply rounded-r-control border-l-4 border-primary-soft bg-surface-muted px-5 py-3 text-ink-soft;
+  }
+
+  .lesson-prose blockquote > * + * {
+    @apply mt-3;
+  }
+
+  /* CKEditor wraps tables in <figure class="table">; Tailwind would read the class as
+     display: table, so the display is set explicitly. A wide table scrolls inside its figure
+     instead of widening the page; the figure becomes a focusable, labelled region only when
+     it really overflows (see composables/useScrollRegions.js). */
+  .lesson-prose figure.table {
+    @apply block max-w-full overflow-x-auto rounded-control border border-line;
+  }
+
+  .lesson-prose figure.table:focus-visible {
+    outline-offset: 0;
+  }
+
+  .lesson-prose table {
+    @apply w-full min-w-max border-collapse text-sm;
+  }
+
+  .lesson-prose th,
+  .lesson-prose td {
+    @apply border border-line px-3 py-2 text-left align-top;
+  }
+
+  .lesson-prose th {
+    @apply bg-surface-muted font-semibold text-ink;
+  }
+
+  .lesson-prose figure.table table {
+    @apply border-0;
+  }
+
+  /* the sanitizer keeps CKEditor's oembed element; it has nothing to show */
+  .lesson-prose oembed {
+    @apply hidden;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+   Certificate of completion: a document on screen, and the ONLY thing that prints on its page.
+   Printing: the shell, page header and buttons carry print:hidden; the sheet gets its own A4
+   landscape page (named page "certificate"), full-colour borders and no shadow.
+   ------------------------------------------------------------------------------------------ */
+@layer components {
+  .certificate-sheet {
+    @apply mx-auto w-full max-w-4xl;
+  }
+
+  .certificate-frame {
+    @apply rounded-card border-4 border-double border-primary bg-surface px-6 py-10 text-center shadow-card sm:px-14 sm:py-14;
+  }
+
+  .certificate-title {
+    @apply mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl;
+  }
+
+  .certificate-lead {
+    @apply mt-8 text-sm text-ink-muted;
+  }
+
+  .certificate-name {
+    @apply mt-3 break-words text-3xl font-semibold text-primary-strong sm:text-4xl;
+  }
+
+  .certificate-course {
+    @apply mt-3 break-words text-2xl font-semibold text-ink;
+  }
+
+  .certificate-details {
+    @apply mt-12 grid gap-6 border-t border-line pt-6 text-left sm:grid-cols-3;
+  }
+
+  .certificate-details dt {
+    @apply text-xs font-semibold uppercase tracking-wide text-ink-muted;
+  }
+
+  .certificate-details dd {
+    @apply mt-1 break-words text-sm text-ink;
+  }
+}
+
+@media print {
+  @page certificate {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  .certificate-sheet {
+    page: certificate;
+    max-width: none;
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .certificate-frame {
+    margin: 10mm;
+    min-height: 186mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    border-radius: 0;
+    break-inside: avoid;
+  }
+
+  .certificate-details {
+    width: 100%;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+   Motion. Only short colour/opacity transitions exist; nothing moves or bounces. Users who
+   ask for reduced motion get none at all (spinners keep their meaning through the text
+   next to them).
+   ------------------------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
