@@ -281,8 +281,8 @@ describe('public verification', () => {
   it('the home page links to it', async () => {
     const { wrapper } = await openAnonymous('/')
 
-    await waitForText(wrapper, 'Welcome to')
-    expect(wrapper.find('a[href="/certificates/verify"]').text()).toBe('Verify it')
+    await waitForText(wrapper, 'Build a class.')
+    expect(wrapper.find('footer a[href="/certificates/verify"]').text()).toBe('Verify a certificate')
   })
 
   it('verification pages have the document title', async () => {

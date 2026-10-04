@@ -11,7 +11,7 @@ const WIDTHS = { content: 'max-w-content', form: 'max-w-form', reading: 'max-w-r
 </script>
 
 <template>
-  <div class="mx-auto w-full" :class="WIDTHS[size] ?? WIDTHS.content">
+  <div class="mx-auto min-w-0 w-full" :class="WIDTHS[size] ?? WIDTHS.content">
     <slot />
   </div>
 </template>

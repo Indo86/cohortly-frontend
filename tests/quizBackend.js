@@ -296,7 +296,7 @@ export const makeStudentQuizBackend = ({ questionCount = 3, passingScore = 70, w
       state.certificate && call.params.number === state.certificate.certificateNumber ? state.certificate : reply(404, { message: 'Certificate not found' }),
     'GET /api/certificates/verify/:number': (call) =>
       state.certificate && call.params.number === state.certificate.certificateNumber
-        ? { valid: true, certificateNumber: state.certificate.certificateNumber, studentName: state.certificate.studentName, courseName: state.certificate.courseName, instructorName: state.certificate.instructorName, issuedAt: state.certificate.issuedAt }
+        ? { valid: true, certificateNumber: state.certificate.certificateNumber, studentName: state.certificate.studentName, courseName: state.certificate.courseName, instructorName: state.certificate.instructorName, issuedAt: state.certificate.issuedAt, totalLessons: state.certificate.totalLessons }
         : reply(404, { message: 'Certificate not found', valid: false }),
   }
 

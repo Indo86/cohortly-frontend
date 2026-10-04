@@ -1,9 +1,11 @@
 <script setup>
+import CourseCover from '@/components/ui/CourseCover.vue'
 import { RouterLink } from 'vue-router'
 import { R } from '@/constants/routes.js'
 import AppButton from '@/components/ui/AppButton.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import CourseStatusAction from './CourseStatusAction.vue'
+import ActionMenu from '@/components/ui/ActionMenu.vue'
 import DeleteCourseButton from './DeleteCourseButton.vue'
 
 // One course in the list. Fields come from GET /api/courses (the list does not return
@@ -18,7 +20,7 @@ defineProps({
 <template>
   <li class="card-row flex flex-col gap-4 sm:flex-row sm:items-center">
     <div class="flex min-w-0 flex-1 items-center gap-4">
-      <img :src="course.thumbnail_url" alt="" class="h-16 w-24 shrink-0 rounded-control bg-line object-cover sm:h-20 sm:w-32">
+      <CourseCover :course="course" class="w-[4.5rem] md:w-24 xl:w-32" />
       <div class="min-w-0">
         <h2 class="type-card-title break-words">
           <RouterLink :to="{ name: R.INSTRUCTOR_COURSE, params: { courseId: course._id } }" class="hover:underline">
@@ -36,8 +38,10 @@ defineProps({
       <AppButton variant="secondary" :to="{ name: R.INSTRUCTOR_COURSE, params: { courseId: course._id } }" :aria-label="`Open ${course.name}`">
         Open
       </AppButton>
+      <ActionMenu :label="'More actions for ' + course.name">
       <CourseStatusAction :course-id="course._id" :status="course.status" :course-name="course.name" />
       <DeleteCourseButton :course="course" />
+      </ActionMenu>
     </div>
   </li>
 </template>

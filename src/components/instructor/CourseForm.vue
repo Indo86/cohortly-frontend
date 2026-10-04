@@ -1,17 +1,16 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { ErrorKind, fieldErrors } from '@/services/apiError.js'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import AppSelect from '@/components/ui/AppSelect.vue'
 import AppTextarea from '@/components/ui/AppTextarea.vue'
-import ImageField from '@/components/ui/ImageField.vue'
 import InlineAlert from '@/components/feedback/InlineAlert.vue'
 
 // Create / edit form for a course. It builds the multipart body the backend expects and
 // shows both client-side checks (same limits as the backend) and the backend's own
-// field errors. `course` is only given when editing: then the stored category and
-// thumbnail are shown, and the thumbnail is only sent when a new file was chosen.
+// field errors. `course` is only given when editing (its stored values are pre-filled). There is no
+// image upload: the cover is generated from the course (see CourseCover).
 // The course status is never part of this form (the backend owns it).
 const props = defineProps({
   course: { type: Object, default: null },
@@ -23,16 +22,13 @@ const props = defineProps({
 
 const emit = defineEmits(['submit'])
 
-const editing = computed(() => Boolean(props.course))
-
 const form = reactive({
   name: props.course?.name ?? '',
   tagline: props.course?.tagline ?? '',
   description: props.course?.description ?? '',
   categoryId: props.course?.category?._id ?? '',
 })
-const thumbnail = ref(null)
-const clientErrors = reactive({ name: '', tagline: '', description: '', categoryId: '', thumbnail: '' })
+const clientErrors = reactive({ name: '', tagline: '', description: '', categoryId: '' })
 
 const categoryOptions = computed(() => props.categories.map((c) => ({ value: c._id, label: c.name })))
 const serverFields = computed(() => fieldErrors(props.serverError))
@@ -52,7 +48,6 @@ const validate = () => {
   clientErrors.description =
     form.description.trim().length >= 10 ? '' : 'Enter a description of at least 10 characters.'
   clientErrors.categoryId = form.categoryId ? '' : 'Choose a category.'
-  clientErrors.thumbnail = editing.value || thumbnail.value ? '' : 'Choose a thumbnail image.'
 
   return Object.values(clientErrors).every((message) => !message)
 }
@@ -66,7 +61,6 @@ const submit = () => {
   body.append('tagline', form.tagline.trim())
   body.append('description', form.description.trim())
   body.append('categoryId', form.categoryId)
-  if (thumbnail.value) body.append('thumbnail', thumbnail.value)
 
   emit('submit', body)
 }
@@ -80,15 +74,7 @@ const submit = () => {
     <AppInput v-model="form.tagline" label="Tagline" required hint="One short line that sells the course." :error="error('tagline')" />
     <AppSelect v-model="form.categoryId" label="Category" :options="categoryOptions" required :error="error('categoryId')" />
     <AppTextarea v-model="form.description" label="Description" :rows="5" required :error="error('description')" />
-    <ImageField
-      v-model="thumbnail"
-      label="Thumbnail"
-      :current-url="course?.thumbnail_url ?? ''"
-      preview-alt="New thumbnail preview"
-      :required="!editing"
-      :hint="editing ? 'Leave empty to keep the current thumbnail. JPEG or PNG, up to 2 MB.' : 'JPEG or PNG, up to 2 MB.'"
-      :error="error('thumbnail')"
-    />
+    <p class="type-help">The course cover is created for you from the course, so there is nothing to upload.</p>
 
     <div>
       <AppButton type="submit" :loading="pending">{{ submitLabel }}</AppButton>

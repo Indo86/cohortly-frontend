@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import AppIcon from './AppIcon.vue'
 
 // A short status or category label. The WORD carries the meaning; the tone only reinforces it
 // (every tone/foreground pair is >= 4.5:1).
@@ -19,7 +20,8 @@ const classes = computed(() => TONES[props.tone] ?? TONES.neutral)
 </script>
 
 <template>
-  <span class="inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold leading-5" :class="classes">
+  <span class="inline-flex items-center gap-1 whitespace-nowrap rounded-xs px-2 py-0.5 text-metadata font-semibold leading-5" :class="classes">
+    <AppIcon :name="({ success: 'check-circle', warning: 'warning', danger: 'x-circle', info: 'info' })[tone] ?? 'circle'" class="h-3 w-3 shrink-0" />
     <slot />
   </span>
 </template>

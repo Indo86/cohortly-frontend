@@ -12,6 +12,7 @@ defineProps({
   to: { type: [String, Object], required: true },
   exact: { type: Boolean, default: false },
   icon: { type: String, default: '' },
+  compact: { type: Boolean, default: false },
 })
 
 const route = useRoute()
@@ -29,12 +30,12 @@ const isCurrent = (href, exact) => {
       :href="href"
       :aria-current="isCurrent(href, exact) ? 'page' : undefined"
       class="relative flex min-h-[2.75rem] items-center gap-3 rounded-control px-3 py-2 text-sm font-medium transition-colors"
-      :class="isCurrent(href, exact) ? 'bg-primary-faint font-semibold text-primary-strong' : 'text-ink-soft hover:bg-surface-muted hover:text-ink'"
+      :class="[isCurrent(href, exact) ? 'bg-shell-800 font-semibold text-shell-ink' : 'text-shell-muted hover:bg-shell-900 hover:text-shell-ink', compact ? 'justify-center px-0' : '']"
       @click="navigate"
     >
-      <span v-if="isCurrent(href, exact)" class="absolute inset-y-2 left-0 w-1 rounded-full bg-primary" aria-hidden="true" />
+      <span v-if="isCurrent(href, exact)" class="absolute -left-1 top-1/2 -mt-1 h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
       <AppIcon v-if="icon" :name="icon" class="h-5 w-5 shrink-0" />
-      <slot />
+      <span :class="compact ? 'sr-only' : ''"><slot /></span>
     </a>
   </RouterLink>
 </template>

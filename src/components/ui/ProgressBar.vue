@@ -17,7 +17,7 @@ const width = computed(() => `${Math.min(100, Math.max(0, props.percent))}%`)
 <template>
   <div>
     <div
-      class="h-2 w-full overflow-hidden rounded-full bg-line"
+      class="h-1 w-full overflow-hidden rounded-full bg-line"
       role="progressbar"
       :aria-label="label"
       aria-valuemin="0"
@@ -25,7 +25,7 @@ const width = computed(() => `${Math.min(100, Math.max(0, props.percent))}%`)
       :aria-valuenow="percent"
       :aria-valuetext="text ? `${percent}%, ${text}` : `${percent}%`"
     >
-      <div class="h-full rounded-full transition-[width] duration-300" :class="completed ? 'bg-success' : 'bg-primary'" :style="{ width }" />
+      <div class="h-full rounded-full" :class="completed ? 'bg-success' : 'bg-primary'" :style="{ width }" />
     </div>
     <p v-if="text" class="type-help mt-1.5">{{ text }}</p>
   </div>

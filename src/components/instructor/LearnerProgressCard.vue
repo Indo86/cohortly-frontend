@@ -38,7 +38,7 @@ const lastActivity = computed(() => formatDateTime(props.learner.lastActivityAt)
         </div>
         <p class="type-help truncate">{{ learner.email }}</p>
       </div>
-      <p class="shrink-0 text-right text-2xl font-bold leading-8 tracking-tight text-ink" aria-hidden="true">{{ progress.percent }}%</p>
+      <p class="shrink-0 text-right font-display text-3xl font-medium leading-8 tracking-tight text-ink" aria-hidden="true">{{ progress.percent }}%</p>
     </div>
 
     <div class="mt-3">
@@ -50,9 +50,9 @@ const lastActivity = computed(() => formatDateTime(props.learner.lastActivityAt)
       />
     </div>
 
-    <dl class="mt-4 grid gap-3 border-t border-line pt-3 text-sm sm:grid-cols-2">
+    <dl class="mt-4 grid gap-4 text-sm md:grid-cols-2">
       <div>
-        <dt class="type-eyebrow">Next lesson</dt>
+        <dt class="text-metadata text-ink-3">Next lesson</dt>
         <dd class="mt-1 text-ink">
           <template v-if="learner.nextLesson">
             {{ learner.nextLesson.title }}
@@ -63,12 +63,12 @@ const lastActivity = computed(() => formatDateTime(props.learner.lastActivityAt)
         </dd>
       </div>
       <div>
-        <dt class="type-eyebrow">Last activity</dt>
+        <dt class="text-metadata text-ink-3">Last activity</dt>
         <dd class="mt-1 text-ink">{{ lastActivity ?? 'No activity yet' }}</dd>
       </div>
       <!-- assessment is reported on its own, never merged into the lesson percentage -->
       <div v-if="learner.quiz">
-        <dt class="type-eyebrow">Final quiz</dt>
+        <dt class="text-metadata text-ink-3">Final quiz</dt>
         <dd class="mt-1 text-ink">
           {{ QUIZ_STATUS[learner.quiz.status] ?? learner.quiz.status }}
           <span v-if="learner.quiz.attempts > 0" class="text-ink-muted">
@@ -77,7 +77,7 @@ const lastActivity = computed(() => formatDateTime(props.learner.lastActivityAt)
         </dd>
       </div>
       <div v-if="'certificateIssued' in learner">
-        <dt class="type-eyebrow">Certificate</dt>
+        <dt class="text-metadata text-ink-3">Certificate</dt>
         <dd class="mt-1 text-ink">{{ learner.certificateIssued ? 'Issued' : 'Not issued' }}</dd>
       </div>
     </dl>

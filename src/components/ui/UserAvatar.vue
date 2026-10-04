@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
+import { stableHash } from '@/utils/courseArtwork.js'
 
 // Decorative avatar: the person's name is always shown next to it, so the image has an empty
 // alt. If the image is missing or fails to load, initials are shown instead.
@@ -34,8 +35,9 @@ const dimension = computed(() => ({ sm: 'h-8 w-8 text-xs', md: 'h-10 w-10 text-s
   >
   <span
     v-else
-    class="inline-flex shrink-0 items-center justify-center rounded-full bg-brand-100 font-semibold text-brand-800"
+    class="inline-flex shrink-0 items-center justify-center rounded-full font-mono font-medium"
     :class="dimension"
+    :style="{ background: 'var(--art-' + (stableHash(name) % 6 + 1) + '-ground)', color: 'var(--art-' + (stableHash(name) % 6 + 1) + '-figure)' }"
     aria-hidden="true"
   >
     {{ initials }}

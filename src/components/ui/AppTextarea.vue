@@ -19,7 +19,7 @@ const describedBy = computed(() => [props.hint && `${id}-hint`, props.error && `
   <div class="flex flex-col gap-1.5">
     <label :for="id" class="type-label">
       {{ label }}
-      <span v-if="required" class="text-danger" aria-hidden="true">*</span>
+      <span v-if="required" class="ml-1 text-metadata font-normal text-ink-3">(required)</span>
     </label>
     <textarea
       :id="id"

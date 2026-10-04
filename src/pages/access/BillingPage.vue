@@ -79,8 +79,9 @@ const checkAgain = () => {
   <div>
     <PageHeader title="Plan & Billing" description="Your subscription keeps your courses and your students’ learning available." />
 
-    <div class="grid max-w-3xl gap-6">
+    <div class="grid max-w-4xl gap-6">
       <AppCard>
+        <p class="type-eyebrow mb-3">Workspace account</p>
         <div class="flex flex-wrap items-center gap-3">
           <h2 class="type-section-title">Subscription</h2>
           <StatusBadge kind="subscription" :status="auth.accessStatus" />
@@ -88,16 +89,16 @@ const checkAgain = () => {
 
         <p class="type-body mt-3">{{ copy.summary }}</p>
 
-        <dl v-if="start || expiry" class="mt-5 grid gap-4 rounded-control bg-surface-muted p-4 sm:grid-cols-2">
+        <dl v-if="start || expiry" class="mt-8 grid gap-6 border-y border-line py-6 sm:grid-cols-2">
           <div v-if="start">
-            <dt class="type-eyebrow">Current period started</dt>
-            <dd class="mt-1 text-sm text-ink">{{ start }}</dd>
+            <dt class="text-sm text-ink-2">Current period started</dt>
+            <dd class="mt-2 font-display text-xl text-ink">{{ start }}</dd>
           </div>
           <div v-if="expiry">
-            <dt class="type-eyebrow">
+            <dt class="text-sm text-ink-2">
               {{ auth.isActive ? 'Active until' : 'Ended on' }}
             </dt>
-            <dd class="mt-1 text-sm text-ink">{{ expiry }}</dd>
+            <dd class="mt-2 font-display text-xl text-ink">{{ expiry }}</dd>
           </div>
         </dl>
 

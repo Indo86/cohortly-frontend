@@ -9,7 +9,6 @@ import { roleHome } from '@/router/guards.js'
 import { useAuthStore } from '@/stores/auth.js'
 import { safeInternalPath } from '@/utils/navigation.js'
 import AppButton from '@/components/ui/AppButton.vue'
-import AppCard from '@/components/ui/AppCard.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import InlineAlert from '@/components/feedback/InlineAlert.vue'
 
@@ -72,13 +71,14 @@ const submit = async () => {
 </script>
 
 <template>
-  <AppCard>
+  <section class="auth-form">
+    <p class="type-eyebrow mb-3">Welcome back</p>
     <h1 class="type-page-title">{{ ROLE_LABELS[role] }} sign in</h1>
     <p class="type-meta mt-1">
       {{ isInstructorPortal ? 'Manage your courses and students.' : 'Continue learning where you left off.' }}
     </p>
 
-    <form class="mt-6 flex flex-col gap-4" novalidate @submit.prevent="submit">
+    <form class="mt-8 flex flex-col gap-6" novalidate @submit.prevent="submit">
       <InlineAlert v-if="message" tone="danger">{{ message }}</InlineAlert>
       <InlineAlert v-if="wrongPortal" tone="warning" title="Wrong sign-in page">
         This is a {{ otherLabel.toLowerCase() }} account, so you have been signed out of this page.
@@ -98,13 +98,13 @@ const submit = async () => {
       <AppButton type="submit" :loading="pending" block>Sign in</AppButton>
     </form>
 
-    <p class="type-meta mt-6 text-center">
+    <p class="type-body mt-8 border-t border-line pt-6">
       <template v-if="isInstructorPortal">
         New here?
         <RouterLink :to="{ name: R.REGISTER }" class="type-link">Register your organization</RouterLink>
-        ·
+        <br>
       </template>
       <RouterLink :to="{ name: otherPortal }" class="type-link">{{ otherLabel }} sign in</RouterLink>
     </p>
-  </AppCard>
+  </section>
 </template>

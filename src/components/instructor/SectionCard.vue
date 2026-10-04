@@ -111,8 +111,8 @@ const moveLesson = async (lessonIndex, delta) => {
   <li>
     <!-- Course -> Section -> Lesson: the section is a card with a header band (number, title,
          lesson count, section actions); its lessons are an indented list inside it. -->
-    <div class="card overflow-hidden">
-      <div class="flex flex-col gap-3 border-b border-line bg-surface-muted/60 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+    <div class="border-y border-line">
+      <div class="flex flex-col gap-3 border-b border-line bg-paper-sunk px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
         <div class="min-w-0 flex-1">
           <form v-if="editing" class="flex flex-col gap-2 sm:flex-row sm:items-end" novalidate @submit.prevent="saveRename">
             <div class="flex-1">
@@ -122,8 +122,8 @@ const moveLesson = async (lessonIndex, delta) => {
             <AppButton variant="secondary" @click="stopRename">Cancel</AppButton>
           </form>
           <template v-else>
-            <h2 class="type-section-title break-words">
-              <span class="mr-2 text-sm font-medium text-ink-muted">{{ index + 1 }}.</span>{{ section.title }}
+            <p class="type-eyebrow mb-2">Section {{ String(index + 1).padStart(2, '0') }}</p>
+            <h2 class="type-section-title break-words">{{ section.title }}
             </h2>
             <p class="type-meta">{{ lessonCount }} {{ lessonCount === 1 ? 'lesson' : 'lessons' }}</p>
           </template>
@@ -142,7 +142,7 @@ const moveLesson = async (lessonIndex, delta) => {
         <p v-if="lessonCount === 0" class="type-meta my-3 rounded-control border border-dashed border-line-control p-4">
           No lessons yet. A course needs at least one lesson before it can be published.
         </p>
-        <ul v-else class="divide-y divide-line">
+        <ul v-else class="ml-2 divide-y divide-line border-l border-line-strong pl-4">
           <LessonRow
             v-for="(lesson, lessonIndex) in section.lessons"
             :key="lesson._id"

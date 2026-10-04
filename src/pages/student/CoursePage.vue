@@ -7,7 +7,9 @@ import { formatDateTime } from '@/utils/date.js'
 import { certificateAction, courseAction, courseState, lessonCountText } from '@/utils/studentCourse.js'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import AppButton from '@/components/ui/AppButton.vue'
-import AppCard from '@/components/ui/AppCard.vue'
+import CourseCover from '@/components/ui/CourseCover.vue'
+import CohortLine from '@/components/ui/CohortLine.vue'
+import { learningStations } from '@/utils/learningLine.js'
 import InlineAlert from '@/components/feedback/InlineAlert.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
@@ -50,8 +52,8 @@ const lastActivity = computed(() => formatDateTime(data.value?.lastActivityAt))
       @retry="course.refetch()"
     >
       <template v-if="data">
-        <header class="mb-6 flex flex-col gap-5 sm:flex-row">
-          <img :src="data.thumbnail_url" alt="" class="h-40 w-full shrink-0 rounded-card bg-line object-cover shadow-card sm:h-32 sm:w-52">
+        <header class="mb-8 grid items-center gap-8 md:grid-cols-[2fr_3fr]">
+          <CourseCover :course="data" class="aspect-video w-full md:aspect-[4/3]" />
           <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
               <h1 class="type-page-title min-w-0 break-words">{{ data.name }}</h1>
@@ -66,9 +68,10 @@ const lastActivity = computed(() => formatDateTime(data.value?.lastActivityAt))
           </div>
         </header>
 
-        <AppCard class="mb-8" aria-labelledby="progress-heading">
+        <section class="mb-12 border-y border-line py-6" aria-labelledby="progress-heading">
           <h2 id="progress-heading" class="type-card-title">Your progress</h2>
           <div class="mt-3 max-w-xl">
+            <CohortLine :stations="learningStations(data)" />
             <ProgressBar
               :percent="data.progress.percent"
               :completed="data.progress.completed"
@@ -102,9 +105,7 @@ const lastActivity = computed(() => formatDateTime(data.value?.lastActivityAt))
               {{ certificate.label }}
             </AppButton>
           </div>
-        </AppCard>
-
-        <StudentQuizCard v-if="data.quiz" :course-id="data._id" :quiz="data.quiz" class="mb-8" />
+        </section>
 
         <section aria-labelledby="outline-heading">
           <SectionHeader id="outline-heading" title="Course outline" />
@@ -117,6 +118,7 @@ const lastActivity = computed(() => formatDateTime(data.value?.lastActivityAt))
           </div>
           <CourseOutline v-else :course-id="data._id" :sections="data.sections" :next-lesson-id="data.nextLesson?._id ?? null" />
         </section>
+        <StudentQuizCard v-if="data.quiz" :course-id="data._id" :quiz="data.quiz" class="mt-8" />
       </template>
     </StudentQueryState>
   </div>

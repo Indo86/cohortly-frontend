@@ -70,13 +70,19 @@ describe('student dashboard', () => {
     expect(wrapper.text()).toContain('3 courses · 1 completed')
   })
 
-  it('lists every course below the Continue card', async () => {
+  it('lists the other courses below the Continue card, without repeating the one already shown there', async () => {
     const { wrapper } = await openStudentApp('/student', {
       routes: { 'GET /api/students-courses': [summaryRow({ name: 'First' }), summaryRow({ _id: 'c2', name: 'Second' })] },
     })
 
     await waitForText(wrapper, 'My courses')
-    expect(wrapper.findAll('section[aria-labelledby="my-courses-heading"] li')).toHaveLength(2)
+    // the approved design shows the continue course once (the hero), then the rest
+    expect(wrapper.find('section[aria-labelledby="continue-heading"]').text()).toContain('First')
+    const tiles = wrapper.findAll('section[aria-labelledby="my-courses-heading"] li')
+
+    expect(tiles).toHaveLength(1)
+    expect(tiles[0].text()).toContain('Second')
+    expect(wrapper.find('section[aria-labelledby="my-courses-heading"]').text()).not.toContain('First')
   })
 
   it('tells the student truthfully when there are no courses', async () => {

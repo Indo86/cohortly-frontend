@@ -2,7 +2,7 @@
 import { useAuthStore } from '@/stores/auth.js'
 import { formatDateTime } from '@/utils/date.js'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
-import AppCard from '@/components/ui/AppCard.vue'
+import UserAvatar from '@/components/ui/UserAvatar.vue'
 
 // Read-only identity and workspace summary, straight from the session store (/api/me).
 defineProps({
@@ -13,22 +13,23 @@ const auth = useAuthStore()
 </script>
 
 <template>
-  <AppCard class="max-w-form">
-    <dl class="grid gap-5 sm:grid-cols-2">
-      <div>
-        <dt class="type-eyebrow">Name</dt>
+  <section class="max-w-3xl border-t border-line py-8">
+    <div class="mb-8 flex items-center gap-4"><UserAvatar :name="auth.user?.name ?? ''" size="lg" /><div><h2 class="type-section-title">{{ auth.user?.name }}</h2><p class="type-meta mt-1">{{ auth.roleLabel }}</p></div></div>
+    <dl class="account-ledger divide-y divide-line border-y border-line">
+      <div class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr]">
+        <dt class="text-sm text-ink-2">Name</dt>
         <dd class="mt-1 text-base text-ink">{{ auth.user?.name }}</dd>
       </div>
-      <div>
-        <dt class="type-eyebrow">Email</dt>
+      <div class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr]">
+        <dt class="text-sm text-ink-2">Email</dt>
         <dd class="mt-1 break-all text-base text-ink">{{ auth.user?.email }}</dd>
       </div>
-      <div>
-        <dt class="type-eyebrow">Role</dt>
+      <div class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr]">
+        <dt class="text-sm text-ink-2">Role</dt>
         <dd class="mt-1 text-base text-ink">{{ auth.roleLabel }}</dd>
       </div>
-      <div>
-        <dt class="type-eyebrow">{{ accessLabel }}</dt>
+      <div class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr]">
+        <dt class="text-sm text-ink-2">{{ accessLabel }}</dt>
         <dd class="mt-1 text-sm text-ink">
           <StatusBadge v-if="auth.isStudent" kind="workspace" :status="auth.accessStatus" />
           <StatusBadge v-else kind="subscription" :status="auth.accessStatus" />
@@ -39,5 +40,5 @@ const auth = useAuthStore()
       </div>
     </dl>
     <p class="type-help mt-6 border-t border-line pt-4">Account details cannot be changed here yet.</p>
-  </AppCard>
+  </section>
 </template>

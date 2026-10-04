@@ -37,9 +37,10 @@ const confirm = async () => {
 </script>
 
 <template>
-  <li class="flex flex-col gap-3 py-3 sm:flex-row sm:items-center">
+  <li class="relative flex flex-col gap-3 py-3 sm:flex-row sm:items-center">
+    <span class="absolute -left-[1.3125rem] top-6 h-2 w-2 rounded-full border border-line-strong bg-paper" aria-hidden="true" />
     <div class="flex min-w-0 flex-1 items-center gap-3">
-      <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-muted text-ink-soft" aria-hidden="true">
+      <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xs text-ink-2" aria-hidden="true">
         <AppIcon :name="lesson.type === 'video' ? 'play' : 'document'" class="h-5 w-5" />
       </span>
       <span class="type-label min-w-0 break-words">{{ lesson.title }}</span>

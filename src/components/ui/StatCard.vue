@@ -7,8 +7,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="card p-4">
+  <div class="min-w-0 border-l border-line px-4 py-6 first:border-l-0 md:px-6">
     <dt class="type-meta">{{ label }}</dt>
-    <dd class="mt-1 text-3xl font-bold leading-9 tracking-tight text-ink">{{ value }}</dd>
+    <dd class="mt-2 font-display text-4xl font-medium tabular-nums tracking-tight text-ink xl:text-metric">{{ value }}</dd>
   </div>
 </template>

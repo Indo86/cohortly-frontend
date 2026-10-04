@@ -11,7 +11,8 @@ import AppCard from '@/components/ui/AppCard.vue'
 import AppSelect from '@/components/ui/AppSelect.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
-import UserAvatar from '@/components/ui/UserAvatar.vue'
+import PersonRow from '@/components/ui/PersonRow.vue'
+import ActionMenu from '@/components/ui/ActionMenu.vue'
 import DataState from '@/components/feedback/DataState.vue'
 import InlineAlert from '@/components/feedback/InlineAlert.vue'
 
@@ -75,7 +76,7 @@ const confirmRemove = async () => {
     </InlineAlert>
 
     <!-- 1. who is enrolled now -->
-    <AppCard>
+    <section>
       <SectionHeader :title="`Enrolled learners (${learners.length})`" />
       <DataState
         :pending="enrolled.isPending.value"
@@ -89,21 +90,16 @@ const confirmRemove = async () => {
         @retry="enrolled.refetch()"
       >
         <ul class="divide-y divide-line">
-          <li v-for="learner in learners" :key="learner._id" class="flex flex-col gap-3 py-3 sm:flex-row sm:items-center">
-            <div class="flex min-w-0 flex-1 items-center gap-3">
-              <UserAvatar :src="learner.photo_url" :name="learner.name" />
-              <div class="min-w-0">
-                <p class="type-label truncate">{{ learner.name }}</p>
-                <p class="type-help truncate">{{ learner.email }}</p>
-              </div>
-            </div>
+          <PersonRow v-for="learner in learners" :key="learner._id" :person="learner" heading="h3">
+            <ActionMenu :label="'More actions for ' + learner.name">
             <AppButton variant="danger-quiet" :aria-label="`Remove ${learner.name} from this course`" @click="removing = learner; removeError = ''">
               Remove
             </AppButton>
-          </li>
+            </ActionMenu>
+          </PersonRow>
         </ul>
       </DataState>
-    </AppCard>
+    </section>
 
     <!-- 2. add one -->
     <AppCard>

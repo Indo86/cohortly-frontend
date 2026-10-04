@@ -54,10 +54,10 @@ const onBlur = (_event, editor) => {
    a comfortable editing area and content styles that match what students will read. On a narrow
    screen CKEditor folds toolbar buttons into its own "show more" menu, so it never overflows. */
 .lesson-editor {
-  --ck-border-radius: 0.5rem;
-  --ck-color-base-border: rgb(var(--c-line-control));
-  --ck-color-focus-border: rgb(var(--c-primary));
-  --ck-color-text: rgb(var(--c-ink));
+  --ck-border-radius: var(--radius-sm);
+  --ck-color-base-border: var(--line-strong);
+  --ck-color-focus-border: var(--primary);
+  --ck-color-text: var(--ink);
   --ck-font-face: inherit;
   max-width: 100%;
 }
@@ -65,10 +65,12 @@ const onBlur = (_event, editor) => {
 .lesson-editor .ck-editor__editable_inline {
   min-height: 14rem;
   padding: 0.75rem 1rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
   line-height: 1.7;
 }
 
-.lesson-editor .ck-content h2 { font-size: 1.5em; font-weight: 700; }
-.lesson-editor .ck-content h3 { font-size: 1.25em; font-weight: 700; }
-.lesson-editor .ck-content h4 { font-size: 1.1em; font-weight: 700; }
+.lesson-editor .ck-content h2 { font-size: 1.5em; font-weight: 600; }
+.lesson-editor .ck-content h3 { font-size: 1.25em; font-weight: 600; }
+.lesson-editor .ck-content h4 { font-size: 1.1em; font-weight: 600; }
 </style>

@@ -147,7 +147,7 @@ const passedBefore = computed(() => course.value?.quiz?.passed ?? false)
               </h1>
             </div>
 
-            <p class="mt-4 text-3xl font-bold tracking-tight text-ink" data-testid="quiz-score">{{ result.score }}%</p>
+            <p class="mt-6 font-display text-metric tabular-nums text-ink" data-testid="quiz-score">{{ result.score }}%</p>
             <p class="type-meta mt-1">
               {{ result.correctAnswers }} of {{ result.totalQuestions }} correct · Passing score: {{ result.passingScore }}%
             </p>
@@ -175,7 +175,7 @@ const passedBefore = computed(() => course.value?.quiz?.passed ?? false)
 
           <section class="mt-8" aria-labelledby="review-heading">
             <SectionHeader id="review-heading" title="Your answers" description="Which of your answers were correct. The correct options are not shown." />
-            <ol class="card divide-y divide-line">
+            <ol class="divide-y divide-line border-y border-line">
               <li v-for="row in resultRows" :key="row.id" class="flex flex-wrap items-start justify-between gap-3 px-4 py-3 sm:px-5">
                 <p class="min-w-0 flex-1 break-words text-sm text-ink"><span class="text-ink-muted">{{ row.number }}.</span> {{ row.prompt }}</p>
                 <AppBadge :tone="row.correct ? 'success' : 'neutral'">{{ row.correct ? 'Correct' : 'Not correct' }}</AppBadge>
@@ -226,10 +226,10 @@ const passedBefore = computed(() => course.value?.quiz?.passed ?? false)
               v-for="(question, index) in questions"
               :id="`question-${question._id}`"
               :key="question._id"
-              class="card p-4 sm:p-5"
+              class="min-w-0 border-t border-line py-6"
               :aria-describedby="showMissing && !answers[question._id] ? `error-${question._id}` : undefined"
             >
-              <legend class="type-card-title float-left mb-3 w-full break-words">
+              <legend class="float-left mb-6 w-full break-words font-display text-2xl leading-8 text-ink">
                 <span class="text-ink-muted">{{ index + 1 }}.</span> {{ question.prompt }}
               </legend>
 
@@ -258,7 +258,7 @@ const passedBefore = computed(() => course.value?.quiz?.passed ?? false)
         <!-- ======= HISTORY ======= -->
         <section v-if="attempts.length > 0" class="mt-10" aria-labelledby="history-heading">
           <SectionHeader id="history-heading" title="Your attempts" />
-          <ol class="card divide-y divide-line">
+          <ol class="divide-y divide-line border-y border-line">
             <li v-for="attempt in attempts" :key="attempt._id" class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-3 sm:px-5">
               <p class="text-sm font-medium text-ink">Attempt {{ attempt.attemptNumber }}</p>
               <p class="type-meta">{{ formatDateTime(attempt.submittedAt) }}</p>

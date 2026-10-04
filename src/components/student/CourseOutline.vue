@@ -19,21 +19,23 @@ defineProps({
 <template>
   <nav aria-label="Course outline">
     <ol class="flex flex-col gap-5">
-      <li v-for="(section, index) in sections" :key="section._id" class="card overflow-hidden">
+      <li v-for="(section, index) in sections" :key="section._id" class="syllabus-section">
         <section :aria-labelledby="`section-${section._id}`">
-          <header class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-line bg-surface-muted/60 px-4 py-3 sm:px-5">
+          <header class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-line px-4 py-4">
             <h3 :id="`section-${section._id}`" class="type-card-title min-w-0 break-words">
-              <span class="text-ink-muted">Section {{ index + 1 }}:</span> {{ section.title }}
+              <span class="mr-2 font-mono text-metadata uppercase tracking-wide text-ink-3">Section {{ index + 1 }}:</span> {{ section.title }}
             </h3>
             <p class="type-help">{{ section.completedLessons }} of {{ section.totalLessons }} completed</p>
           </header>
 
-          <ol class="divide-y divide-line">
+          <ol class="syllabus-lessons ml-6 border-l border-line-strong">
             <li v-for="lesson in section.lessons" :key="lesson._id">
               <RouterLink
                 :to="lessonRoute(courseId, lesson._id)"
-                class="flex min-h-[3rem] flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 transition-colors hover:bg-surface-muted sm:px-5"
+                class="relative flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 border-b border-line px-4 py-3 hover:bg-paper-sunk"
+                :class="lesson._id === nextLessonId ? 'bg-primary-tint' : ''"
               >
+                <span class="absolute -left-[0.375rem] top-6 h-3 w-3 rounded-full border" :class="lesson.completed ? 'border-primary bg-primary' : lesson._id === nextLessonId ? 'border-accent bg-accent ring-4 ring-accent/30' : 'border-line-strong bg-paper'" aria-hidden="true" />
                 <AppIcon v-if="lesson.completed" name="check-circle" class="h-5 w-5 shrink-0 text-success" />
                 <AppIcon v-else name="circle" class="h-5 w-5 shrink-0 text-ink-muted" />
 

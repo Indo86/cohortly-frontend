@@ -1,48 +1,59 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import plugin from 'tailwindcss/plugin.js'
+
+// Unmodified approved source snapshot. CSS variables and utilities share this source.
+const tokens = JSON.parse(readFileSync(resolve(process.cwd(), 'src/design/tokens.json'), 'utf8'))
+const colors = Object.fromEntries(tokens.color.tokens.map(({ name, value }) => [name, value]))
+const radius = Object.fromEntries(tokens.radius.tokens.map(({ name, value }) => [name.replace('radius-', ''), value]))
+const shadows = Object.fromEntries(tokens.shadow.tokens.map(({ name, value }) => [name.replace('shadow-', ''), value]))
+const variables = Object.fromEntries([
+  ...tokens.color.tokens, ...tokens.spacing.tokens, ...tokens.radius.tokens,
+  ...tokens.shadow.tokens, ...tokens.size.tokens,
+].map(({ name, value }) => [`--${name}`, value]))
+Object.entries(tokens.type.families).forEach(([name, value]) => { variables[`--font-${name}`] = value })
+
 /** @type {import('tailwindcss').Config} */
-
-// Design tokens. The colour values live in src/style.css as CSS variables (one place to retune
-// the palette); this file gives them utility names. Pages and components use the SEMANTIC
-// names (surface, line, ink, success...) and never raw palette steps for meaning.
-const token = (name) => `rgb(var(--c-${name}) / <alpha-value>)`
-
 export default {
   content: ['./index.html', './src/**/*.{vue,js}'],
   theme: {
     extend: {
       colors: {
-        // one brand colour: actions, links, focus and the active navigation state
-        primary: { DEFAULT: token('primary'), hover: token('primary-hover'), soft: token('primary-soft'), strong: token('primary-strong') },
-        brand: { 50: token('primary-faint'), 100: token('primary-soft'), 600: token('primary'), 700: token('primary-hover'), 800: token('primary-strong') },
-
-        // neutral scale
-        canvas: token('canvas'), // the page background
-        surface: { DEFAULT: token('surface'), muted: token('surface-muted') },
-        line: { DEFAULT: token('line'), control: token('line-control') },
-        ink: { DEFAULT: token('ink'), soft: token('ink-soft'), muted: token('ink-muted') },
-
-        // semantic colours: DEFAULT = text/icon/fill on light surfaces, soft = tinted background,
-        // strong = text on the tinted background
-        success: { DEFAULT: token('success'), soft: token('success-soft'), strong: token('success-strong') },
-        warning: { DEFAULT: token('warning'), soft: token('warning-soft'), strong: token('warning-strong') },
-        danger: { DEFAULT: token('danger'), soft: token('danger-soft'), strong: token('danger-strong') },
-        info: { DEFAULT: token('primary'), soft: token('primary-soft'), strong: token('primary-strong') },
+        ...colors,
+        // Existing semantic names remain aliases to approved tokens during this refactor.
+        canvas: colors.paper, 'surface-muted': colors['paper-sunk'],
+        'line-control': colors['line-strong'], 'ink-soft': colors['ink-2'], 'ink-muted': colors['ink-3'],
+        'primary-hover': colors['primary-dark'], 'primary-strong': colors['primary-dark'],
+        'primary-soft': colors['primary-tint'], 'primary-faint': colors['primary-tint'],
+        brand: { 50: colors['primary-tint'], 100: colors['primary-tint'], 600: colors.primary, 700: colors['primary-dark'], 800: colors['primary-dark'] },
+        'success-soft': colors['success-tint'], 'success-strong': colors.success,
+        'warning-soft': colors['warning-tint'], 'warning-strong': colors.warning,
+        'danger-soft': colors['danger-tint'], 'danger-strong': colors.danger,
+        info: { DEFAULT: colors.primary, soft: colors['primary-tint'], strong: colors['primary-dark'] },
       },
       fontFamily: {
-        sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        display: ['Newsreader', 'Iowan Old Style', 'Georgia', 'serif'],
+        sans: ['Instrument Sans', 'Segoe UI', 'system-ui', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
       },
-      // radius scale: control (inputs, buttons), card (panels, list items), overlay (dialogs)
-      borderRadius: { control: '0.5rem', card: '0.75rem', overlay: '1rem' },
-      // shadow scale: cards are barely lifted, only overlays have real depth
-      boxShadow: {
-        card: '0 1px 2px 0 rgb(15 23 42 / 0.05)',
-        overlay: '0 10px 30px -8px rgb(15 23 42 / 0.30)',
+      fontSize: {
+        display: ['4rem', { lineHeight: '1', fontWeight: '500', letterSpacing: '-0.02em' }],
+        'page-title': ['2.5rem', { lineHeight: '2.75rem', fontWeight: '500', letterSpacing: '-0.015em' }],
+        'section-heading': ['1.5rem', { lineHeight: '1.875rem', fontWeight: '600' }],
+        metric: ['3rem', { lineHeight: '1', fontWeight: '500', letterSpacing: '-0.02em' }],
+        'card-title': ['1.0625rem', '1.5rem'],
+        body: ['0.9375rem', '1.5rem'], metadata: ['0.8125rem', '1.125rem'],
+        'reader-title': ['2.75rem', { lineHeight: '3.125rem', fontWeight: '500' }],
+        'reader-body': ['1.25rem', '2.125rem'],
+        code: ['0.8125rem', '1.25rem'],
       },
-      // layout
-      maxWidth: { content: '72rem', form: '42rem', reading: '44rem' },
-      width: { sidebar: '16rem' },
-      height: { header: '3.5rem' },
-      gridTemplateColumns: { shell: '16rem minmax(0, 1fr)' },
+      borderRadius: { ...radius, control: radius.sm, card: radius.md, overlay: radius.md },
+      boxShadow: { ...shadows, card: shadows['1'], overlay: shadows['2'] },
+      maxWidth: { content: '75rem', form: '42rem', reading: '68ch', assistant: '22.5rem' },
+      width: { sidebar: '15.5rem', rail: '4.5rem', assistant: '22.5rem' },
+      height: { header: '4rem' },
+      gridTemplateColumns: { shell: '15.5rem minmax(0, 1fr)', focus: '4.5rem minmax(0, 1fr)' },
     },
   },
-  plugins: [],
+  plugins: [plugin(({ addBase }) => addBase({ ':root': variables }))],
 }

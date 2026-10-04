@@ -7,6 +7,7 @@ import { useCreateLesson, useUpdateLesson } from '@/composables/instructorMutati
 import { useRouteParam } from '@/composables/useRouteParam.js'
 import { ErrorKind, fieldErrors } from '@/services/apiError.js'
 import { parseYoutubeId } from '@/utils/youtube.js'
+import EditorOutline from '@/components/instructor/EditorOutline.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppInput from '@/components/ui/AppInput.vue'
@@ -107,7 +108,12 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="max-w-3xl">
+  <div class="grid min-w-0 gap-6 xl:grid-cols-[17rem_minmax(0,1fr)]">
+    <aside v-if="course.data.value" class="min-w-0">
+      <details class="mb-4 xl:hidden"><summary class="flex min-h-11 cursor-pointer items-center rounded-sm border border-line-strong px-4 text-sm font-semibold">Outline</summary><EditorOutline :course="course.data.value" :current-lesson="lessonId" /></details>
+      <EditorOutline :course="course.data.value" :current-lesson="lessonId" class="hidden xl:block" />
+    </aside>
+    <div class="min-w-0">
     <header class="mb-6">
       <h2 data-page-heading tabindex="-1" class="type-section-title text-xl">{{ editing ? 'Edit lesson' : 'New lesson' }}</h2>
       <p v-if="sectionTitle" class="type-meta mt-1">
@@ -160,5 +166,6 @@ const submit = async () => {
         </form>
       </DataState>
     </AppCard>
+    </div>
   </div>
 </template>

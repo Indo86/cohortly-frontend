@@ -136,7 +136,7 @@ const apply = async () => {
 <template>
   <div v-if="enabled" class="mb-4" data-testid="quiz-ai-draft">
     <p v-if="!available" class="type-meta flex items-center gap-2" role="status">
-      <AppIcon name="sparkles" class="h-4 w-4" />
+      <AppIcon name="document" class="h-4 w-4" />
       AI quiz drafting is temporarily unavailable.
     </p>
 
@@ -148,11 +148,11 @@ const apply = async () => {
         :aria-controls="`${uid}-panel`"
         @click="open = !open"
       >
-        <AppIcon name="sparkles" class="h-4 w-4" />
+        <AppIcon name="document" class="h-4 w-4" />
         Generate with AI
       </button>
 
-      <div v-if="open" :id="`${uid}-panel`" class="card mt-2 p-4 sm:p-5">
+      <div v-if="open" :id="`${uid}-panel`" class="rounded-md border border-line bg-surface mt-2 p-4 sm:p-5">
         <div class="flex flex-wrap items-center gap-2">
           <h3 class="type-card-title">Draft questions with AI</h3>
           <AppBadge tone="info">Draft</AppBadge>

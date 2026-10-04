@@ -7,7 +7,6 @@ import * as authService from '@/services/authService.js'
 import { useAsyncAction } from '@/composables/useAsyncAction.js'
 import { isSafeExternalUrl, redirectExternal } from '@/utils/navigation.js'
 import AppButton from '@/components/ui/AppButton.vue'
-import AppCard from '@/components/ui/AppCard.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import InlineAlert from '@/components/feedback/InlineAlert.vue'
 
@@ -81,7 +80,7 @@ const submit = async () => {
 </script>
 
 <template>
-  <AppCard>
+  <section class="auth-form">
     <h1 class="type-page-title">Register your organization</h1>
     <p class="type-meta mt-1">
       Create an instructor account. You will complete the subscription payment on a secure hosted page.
@@ -119,5 +118,5 @@ const submit = async () => {
       Already registered?
       <RouterLink :to="{ name: R.INSTRUCTOR_SIGN_IN }" class="type-link">Sign in</RouterLink>
     </p>
-  </AppCard>
+  </section>
 </template>

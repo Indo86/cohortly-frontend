@@ -23,7 +23,7 @@ const props = defineProps({
 
 const VARIANTS = {
   primary: 'bg-primary text-white hover:bg-primary-hover',
-  secondary: 'border border-line-control bg-surface text-ink hover:bg-surface-muted',
+  secondary: 'border border-line-strong bg-surface-raised text-ink hover:bg-paper-sunk',
   ghost: 'text-ink-soft hover:bg-surface-muted',
   danger: 'bg-danger text-white hover:bg-danger-strong',
   'danger-quiet': 'text-danger hover:bg-danger-soft',
@@ -31,8 +31,8 @@ const VARIANTS = {
 }
 
 const classes = computed(() => [
-  'inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-control px-4 py-2 text-sm font-semibold leading-5',
-  'transition-colors disabled:pointer-events-none disabled:opacity-60',
+  'inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-control px-4 py-2 text-body font-semibold leading-5',
+  'transition-colors duration-150 disabled:pointer-events-none disabled:!border-transparent disabled:!bg-paper-sunk disabled:!text-ink-3',
   VARIANTS[props.variant] ?? VARIANTS.primary,
   props.block ? 'w-full' : '',
 ])

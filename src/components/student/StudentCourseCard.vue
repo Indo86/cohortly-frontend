@@ -1,4 +1,5 @@
 <script setup>
+import CourseCover from '@/components/ui/CourseCover.vue'
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { certificateAction, courseAction, courseRoute, courseState, lessonCountText } from '@/utils/studentCourse.js'
@@ -10,6 +11,7 @@ import ProgressBar from '@/components/ui/ProgressBar.vue'
 // backend's; the state words and the action are chosen from those fields, never computed.
 const props = defineProps({
   course: { type: Object, required: true },
+  tile: { type: Boolean, default: false },
 })
 
 const state = computed(() => courseState(props.course.progress, props.course.quiz))
@@ -18,9 +20,9 @@ const certificate = computed(() => certificateAction(props.course))
 </script>
 
 <template>
-  <li class="card-row flex flex-col gap-4 sm:flex-row sm:items-center">
-    <div class="flex min-w-0 flex-1 items-start gap-4">
-      <img :src="course.thumbnail_url" alt="" class="h-16 w-24 shrink-0 rounded-control bg-line object-cover sm:h-24 sm:w-36">
+  <li class="flex flex-col gap-4" :class="tile ? 'py-0' : 'card-row sm:flex-row sm:items-center'">
+    <div class="flex min-w-0 flex-1 items-start gap-4" :class="tile ? 'flex-col' : ''">
+      <CourseCover :course="course" :class="tile ? 'w-full' : 'w-[4.5rem] md:w-24 xl:w-32'" />
 
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -54,7 +56,7 @@ const certificate = computed(() => certificateAction(props.course))
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-2 sm:shrink-0 sm:flex-col sm:items-stretch">
+    <div class="flex flex-wrap gap-2" :class="tile ? '' : 'sm:shrink-0 sm:flex-col sm:items-stretch'">
       <AppButton :variant="action.variant" :to="action.to" :aria-label="`${action.label}: ${course.name}`">{{ action.label }}</AppButton>
       <AppButton v-if="certificate" variant="secondary" :to="certificate.to" :aria-label="`${certificate.label}: ${course.name}`">{{ certificate.label }}</AppButton>
     </div>

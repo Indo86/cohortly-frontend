@@ -7,7 +7,8 @@ import { normalizeError } from '@/services/apiError.js'
 import AppButton from '@/components/ui/AppButton.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
-import UserAvatar from '@/components/ui/UserAvatar.vue'
+import PersonRow from '@/components/ui/PersonRow.vue'
+import ActionMenu from '@/components/ui/ActionMenu.vue'
 import DataState from '@/components/feedback/DataState.vue'
 
 // Your students (the backend lists only students you created). `courses` is the list of
@@ -53,17 +54,10 @@ const confirm = async () => {
         <AppButton :to="{ name: R.INSTRUCTOR_STUDENT_NEW }">Add your first student</AppButton>
       </template>
 
-      <ul class="flex flex-col gap-3">
-        <li v-for="student in students.data.value" :key="student._id" class="card-row flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div class="flex min-w-0 flex-1 items-center gap-4">
-            <UserAvatar :src="student.photo_url" :name="student.name" size="lg" />
-            <div class="min-w-0">
-              <h2 class="type-card-title truncate">{{ student.name }}</h2>
-              <p class="type-meta">
-                Enrolled in {{ student.courses.length }} {{ student.courses.length === 1 ? 'course' : 'courses' }}
-              </p>
-            </div>
-          </div>
+      <p class="type-meta mb-4">{{ students.data.value.length }} students in your directory</p>
+      <ul class="border-t border-line">
+        <PersonRow v-for="student in students.data.value" :key="student._id" :person="student">
+          <template #summary>Enrolled in {{ student.courses.length }} {{ student.courses.length === 1 ? 'course' : 'courses' }}</template>
           <div class="flex flex-wrap gap-2">
             <AppButton
               variant="secondary"
@@ -72,9 +66,9 @@ const confirm = async () => {
             >
               Edit
             </AppButton>
-            <AppButton variant="danger-quiet" :aria-label="`Delete ${student.name}`" @click="deleting = student; error = ''">Delete</AppButton>
+            <ActionMenu :label="'More actions for ' + student.name"><AppButton variant="danger-quiet" :aria-label="`Delete ${student.name}`" @click="deleting = student; error = ''">Delete</AppButton></ActionMenu>
           </div>
-        </li>
+        </PersonRow>
       </ul>
     </DataState>
 

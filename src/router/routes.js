@@ -7,11 +7,12 @@ import StudentLayout from '@/layouts/StudentLayout.vue'
 // Pages are loaded on demand. Access rules live in `meta` (see router/guards.js), never
 // inside pages.
 export const routes = [
+  // the public landing page has its own full-width layout (it is not an auth card)
+  { path: '/', name: R.HOME, component: () => import('@/pages/LandingPage.vue') },
   {
     path: '/',
     component: AuthLayout,
     children: [
-      { path: '', name: R.HOME, component: () => import('@/pages/HomePage.vue') },
       {
         path: 'instructor/sign-in',
         name: R.INSTRUCTOR_SIGN_IN,

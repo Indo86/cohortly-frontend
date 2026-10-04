@@ -222,9 +222,7 @@ describe('course list', () => {
 })
 
 describe('create course', () => {
-  const file = () => new File(['x'], 'cover.png', { type: 'image/png' })
-
-  const fillAndSubmit = async (wrapper, { withFile = true } = {}) => {
+  const fillAndSubmit = async (wrapper) => {
     await wrapper.find('input[type="text"]').setValue('Brand new course') // name
     const inputs = wrapper.findAll('input[type="text"]')
 
@@ -232,12 +230,6 @@ describe('create course', () => {
     await wrapper.find('select').setValue('cat-1')
     await wrapper.find('textarea').setValue('A long enough description of the course')
 
-    if (withFile) {
-      const input = wrapper.find('input[type="file"]')
-
-      Object.defineProperty(input.element, 'files', { value: [file()], configurable: true })
-      await input.trigger('change')
-    }
 
     await wrapper.find('form').trigger('submit.prevent')
     await flushPromises()
@@ -267,7 +259,7 @@ describe('create course', () => {
       categoryId: 'cat-1',
       description: 'A long enough description of the course',
     })
-    expect(sent.form.thumbnail).toBeInstanceOf(File)
+    expect(sent.form).not.toHaveProperty('thumbnail') // the cover is generated, never uploaded
     expect(sent.form).not.toHaveProperty('status')
 
     // after creating, the instructor lands in the new course's editor
@@ -275,7 +267,7 @@ describe('create course', () => {
     expect(router.currentRoute.value.params.courseId).toBe('new-course-id')
   })
 
-  it('validates locally first, including the required thumbnail', async () => {
+  it('validates locally first, and offers no image upload', async () => {
     const { wrapper, fake } = await openInstructorApp('/instructor/courses/new', { routes: base() })
 
     await waitForText(wrapper, 'Course name')
@@ -285,7 +277,8 @@ describe('create course', () => {
     expect(fake.callsTo('POST /api/courses')).toHaveLength(0)
     expect(wrapper.text()).toContain('Enter a name of at least 5 characters.')
     expect(wrapper.text()).toContain('Choose a category.')
-    expect(wrapper.text()).toContain('Choose a thumbnail image.')
+    expect(wrapper.find('input[type="file"]').exists()).toBe(false)
+    expect(wrapper.text()).not.toContain('Thumbnail')
   })
 
   it('shows the backend validation errors next to their fields', async () => {
@@ -309,13 +302,13 @@ describe('create course', () => {
 
   it('shows a non-field backend error as a message and keeps the form usable', async () => {
     const { wrapper } = await openInstructorApp('/instructor/courses/new', {
-      routes: base({ 'POST /api/courses': reply(400, { message: 'Thumbnail is required' }) }),
+      routes: base({ 'POST /api/courses': reply(400, { message: 'Category not found' }) }),
     })
 
     await waitForText(wrapper, 'Course name')
     await fillAndSubmit(wrapper)
 
-    expect(wrapper.find('[role="alert"]').text()).toBe('Thumbnail is required')
+    expect(wrapper.find('[role="alert"]').text()).toBe('Category not found')
     expect(wrapper.find('button[type="submit"]').attributes('disabled')).toBeUndefined()
   })
 
@@ -341,7 +334,7 @@ describe('edit course', () => {
     expect(texts[1].element.value).toBe('Learn Vue by building')
     expect(wrapper.find('select').element.value).toBe('cat-2')
     expect(wrapper.find('textarea').element.value).toBe('A complete description of the course.')
-    expect(wrapper.find('img[alt="Current image"]').attributes('src')).toContain('thumb.png')
+    expect(wrapper.find('input[type="file"]').exists()).toBe(false)
   })
 
   it('saves changes without a new thumbnail and without touching the status', async () => {

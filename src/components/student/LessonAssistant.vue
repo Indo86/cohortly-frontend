@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, useId } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
 import { useAiStatusQuery, useAskLessonQuestion, useGeneratePractice, useLessonSummary } from '@/composables/aiQueries.js'
 import { aiErrorMessage } from '@/utils/ai.js'
 import AppBadge from '@/components/ui/AppBadge.vue'
@@ -21,6 +21,18 @@ const props = defineProps({
   lessonType: { type: String, default: 'text' },
 })
 
+const emit = defineEmits(['toggle'])
+const trigger = ref(null)
+const panel = ref(null)
+const compactScreen = ref(false)
+let media
+let savedOverflow = ''
+const syncScreen = () => { compactScreen.value = media?.matches ?? false }
+onMounted(() => {
+  media = window.matchMedia?.('(max-width: 1279px)')
+  syncScreen()
+  media?.addEventListener('change', syncScreen)
+})
 const uid = useId()
 const courseId = computed(() => props.courseId)
 const lessonId = computed(() => props.lessonId)
@@ -31,6 +43,32 @@ const summaryMutation = useLessonSummary(courseId, lessonId)
 const practiceMutation = useGeneratePractice(courseId, lessonId)
 
 const open = ref(false)
+const closeTools = () => { open.value = false; trigger.value?.focus() }
+const keydown = (event) => {
+  if (!open.value) return
+  if (event.key === 'Escape') { event.preventDefault(); closeTools(); return }
+  if (event.key !== 'Tab' || !compactScreen.value) return
+  const elements = [...(panel.value?.querySelectorAll('button:not([disabled]), input, textarea, a[href]') ?? [])]
+  const first = elements[0]
+  const last = elements.at(-1)
+  if (event.shiftKey && (document.activeElement === first || !panel.value?.contains(document.activeElement))) { event.preventDefault(); last?.focus() }
+  else if (!event.shiftKey && (document.activeElement === last || !panel.value?.contains(document.activeElement))) { event.preventDefault(); first?.focus() }
+}
+watch(open, async (value) => {
+  emit('toggle', value)
+  if (value) { document.addEventListener('keydown', keydown); await nextTick(); if (compactScreen.value) panel.value?.querySelector('button')?.focus() }
+  else document.removeEventListener('keydown', keydown)
+})
+watch(() => open.value && compactScreen.value, (modal) => {
+  if (modal) { savedOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden' }
+  else document.body.style.overflow = savedOverflow
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', keydown)
+  media?.removeEventListener('change', syncScreen)
+  if (open.value && compactScreen.value) document.body.style.overflow = savedOverflow
+  emit('toggle', false)
+})
 const question = ref('')
 const questionError = ref('')
 const answer = ref(null)
@@ -74,32 +112,35 @@ const generate = () => run('practice', practiceMutation, (result) => { practiceR
 
 <template>
   <!-- AI is optional: nothing at all while it is off or its state is unknown -->
-  <section v-if="enabled" class="mt-10 border-t border-line pt-6 print:hidden" aria-labelledby="ai-tools-heading" data-testid="lesson-assistant">
+  <aside v-if="enabled" class="reader-assistant print:hidden" :class="[open ? 'study-tools-open' : '', enabled && (!available || !textLesson) ? 'reader-assistant-note' : '']" aria-labelledby="ai-tools-heading" data-testid="lesson-assistant">
     <h2 id="ai-tools-heading" class="sr-only">AI study tools</h2>
 
     <p v-if="!available" class="type-meta flex items-center gap-2" role="status">
-      <AppIcon name="sparkles" class="h-4 w-4" />
+      <AppIcon name="document" class="h-4 w-4" />
       AI study tools are temporarily unavailable.
     </p>
     <p v-else-if="!textLesson" class="type-meta flex items-center gap-2">
-      <AppIcon name="sparkles" class="h-4 w-4" />
+      <AppIcon name="document" class="h-4 w-4" />
       AI study tools work from lesson text, so they are not available for video lessons.
     </p>
 
     <template v-else>
       <button
+        ref="trigger"
         type="button"
-        class="inline-flex min-h-[2.75rem] items-center gap-2 rounded-control px-3 text-sm font-semibold text-primary-hover hover:bg-primary-faint"
+        class="inline-flex min-h-[2.75rem] items-center gap-2 rounded-control px-3 text-sm font-semibold text-ink-2 hover:bg-paper-sunk"
         :aria-expanded="open ? 'true' : 'false'"
         :aria-controls="`${uid}-panel`"
         @click="open = !open"
       >
-        <AppIcon name="sparkles" class="h-4 w-4" />
+        <AppIcon name="document" class="h-4 w-4" />
         AI study tools
         <AppIcon :name="open ? 'close' : 'plus'" class="h-4 w-4" />
       </button>
 
-      <div v-if="open" :id="`${uid}-panel`" class="card mt-3 p-4 sm:p-5">
+      <button v-if="open && compactScreen" type="button" class="fixed inset-0 z-40 bg-shell-950/50" tabindex="-1" aria-label="Close study tools" @click="closeTools" />
+      <div v-if="open" :id="`${uid}-panel`" ref="panel" class="study-tools-panel rounded-md border border-line bg-surface-raised p-4 shadow-2 md:p-6" :role="compactScreen ? 'dialog' : undefined" :aria-modal="compactScreen ? 'true' : undefined" :aria-label="compactScreen ? 'AI study assistant' : undefined">
+        <div class="mb-4 flex items-center justify-between gap-2"><p class="type-eyebrow">Study tools</p><button type="button" aria-label="Close study tools" class="flex min-h-11 min-w-11 items-center justify-center rounded-sm hover:bg-paper-sunk" @click="closeTools"><AppIcon name="close" /></button></div>
         <div class="flex flex-wrap items-center gap-2">
           <h3 class="type-card-title">AI study assistant</h3>
           <AppBadge tone="info">Based on this lesson</AppBadge>
@@ -139,7 +180,7 @@ const generate = () => run('practice', practiceMutation, (result) => { practiceR
           <InlineAlert v-if="errors.summary" tone="danger" title="The summary could not be created">{{ errors.summary }}</InlineAlert>
           <InlineAlert v-if="errors.practice" tone="danger" title="Practice questions could not be created">{{ errors.practice }}</InlineAlert>
 
-          <section v-if="answer" class="rounded-control border border-line p-4" data-testid="ai-answer">
+          <section v-if="answer" class="border-t border-line pt-4" data-testid="ai-answer">
             <div class="flex flex-wrap items-center gap-2">
               <h3 class="type-card-title">AI-generated answer</h3>
               <AppBadge :tone="answer.groundedInLesson ? 'success' : 'warning'">
@@ -150,7 +191,7 @@ const generate = () => run('practice', practiceMutation, (result) => { practiceR
             <p class="type-body mt-3 whitespace-pre-line break-words">{{ answer.answer }}</p>
           </section>
 
-          <section v-if="summary" class="rounded-control border border-line p-4" data-testid="ai-summary">
+          <section v-if="summary" class="border-t border-line pt-4" data-testid="ai-summary">
             <div class="flex flex-wrap items-center gap-2">
               <h3 class="type-card-title">AI-generated summary</h3>
               <AppBadge tone="info">Based on this lesson</AppBadge>
@@ -162,5 +203,5 @@ const generate = () => run('practice', practiceMutation, (result) => { practiceR
         </div>
       </div>
     </template>
-  </section>
+  </aside>
 </template>

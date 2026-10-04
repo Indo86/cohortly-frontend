@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import axe from 'axe-core'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import tailwindConfig from '../tailwind.config.js'
 import { APP_NAME, APP_TAGLINE } from '@/constants/app.js'
@@ -365,17 +365,21 @@ describe('product identity', () => {
 })
 
 describe('design tokens and motion', () => {
-  it('exposes the semantic tokens through Tailwind and defines their values once', () => {
+  it('exposes the approved design-system tokens through Tailwind, from one source', () => {
     const colors = tailwindConfig.theme.extend.colors
+    const source = JSON.parse(readFileSync(resolve(process.cwd(), 'src/design/tokens.json'), 'utf8'))
+    const approvedPath = resolve(process.cwd(), '../../cohortly-design-system/tokens.json')
 
-    for (const name of ['primary', 'canvas', 'surface', 'line', 'ink', 'success', 'warning', 'danger', 'info']) expect(colors[name], name).toBeDefined()
+    // the snapshot in the app is the approved design-system file, unmodified (checked where the design system sits beside the repo)
+    if (existsSync(approvedPath)) expect(source).toEqual(JSON.parse(readFileSync(approvedPath, 'utf8')))
 
-    for (const variable of ['--c-primary', '--c-surface', '--c-surface-muted', '--c-line', '--c-ink', '--c-ink-muted', '--c-success', '--c-warning', '--c-danger']) {
-      expect(styles).toContain(`${variable}:`)
-    }
+    for (const name of ['primary', 'primary-dark', 'accent', 'paper', 'surface', 'surface-raised', 'line', 'line-strong', 'ink', 'ink-2', 'ink-3', 'success', 'warning', 'danger', 'shell-950', 'shell-900', 'shell-800']) expect(colors[name], name).toBeDefined()
 
-    expect(Object.keys(tailwindConfig.theme.extend.borderRadius)).toEqual(['control', 'card', 'overlay'])
-    expect(Object.keys(tailwindConfig.theme.extend.boxShadow)).toEqual(['card', 'overlay'])
+    for (const token of source.color.tokens) expect(colors[token.name], token.name).toBe(token.value)
+
+    for (const key of ['xs', 'sm', 'md', 'lg', 'full']) expect(tailwindConfig.theme.extend.borderRadius[key], key).toBeDefined()
+    for (const key of ['1', '2', 'sheet']) expect(tailwindConfig.theme.extend.boxShadow[key], key).toBeDefined()
+    expect(Object.keys(tailwindConfig.theme.extend.fontFamily)).toEqual(['display', 'sans', 'mono'])
   })
 
   it('honours prefers-reduced-motion by removing animation and transition time', () => {

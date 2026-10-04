@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { R } from '@/constants/routes.js'
 import { useCourseQuery } from '@/composables/instructorQueries.js'
 import { useRouteParam } from '@/composables/useRouteParam.js'
+import CourseCover from '@/components/ui/CourseCover.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import CourseStatusAction from '@/components/instructor/CourseStatusAction.vue'
@@ -51,8 +52,9 @@ const notFound = computed(() => course.error.value?.kind === ErrorKind.NOT_FOUND
           ← All courses
         </RouterLink>
 
-        <header class="mb-6 mt-3 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div class="min-w-0">
+        <header class="mb-8 mt-4 flex flex-wrap items-center gap-6">
+          <CourseCover :course="course.data.value" class="w-24 md:w-32" />
+          <div class="min-w-0 flex-1 basis-48">
             <h1 class="type-page-title break-words">{{ course.data.value.name }}</h1>
             <p class="type-meta mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
               <StatusBadge :status="course.data.value.status" />
