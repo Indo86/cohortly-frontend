@@ -33,7 +33,7 @@ const validate = () => {
   clientErrors.name = form.name.trim().length >= 5 ? '' : 'Enter your full name (at least 5 characters).'
   clientErrors.email = /^\S+@\S+\.\S+$/.test(form.email.trim()) ? '' : 'Enter a valid email address.'
   clientErrors.password =
-    form.password.length >= 5 && form.password.length <= 72 ? '' : 'Use a password of 5 to 72 characters.'
+    form.password.length >= 8 && form.password.length <= 72 ? '' : 'Use a password of 8 to 72 characters.'
 
   return !clientErrors.name && !clientErrors.email && !clientErrors.password
 }
@@ -107,7 +107,7 @@ const submit = async () => {
         type="password"
         autocomplete="new-password"
         required
-        hint="5 to 72 characters."
+        hint="8 to 72 characters."
         :error="errors.password"
       />
 

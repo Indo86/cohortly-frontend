@@ -109,6 +109,15 @@ describe('instructor registration', () => {
     expect(wrapper.findAll('input').every((input) => input.attributes('aria-invalid') === 'true')).toBe(true)
   })
 
+  it('asks for at least 8 characters, like the backend password policy (M2)', async () => {
+    const wrapper = await open()
+
+    await fill(wrapper, { password: 'short12' })
+
+    expect(authService.signUp).not.toHaveBeenCalled()
+    expect(wrapper.text()).toContain('Use a password of 8 to 72 characters.')
+  })
+
   it('a network failure is shown and registration can be retried', async () => {
     vi.mocked(authService.signUp).mockRejectedValue(networkError())
     const wrapper = await open()

@@ -116,7 +116,7 @@ describe('create student', () => {
 
     expect(wrapper.text()).toContain('Enter a name of at least 5 characters.')
     expect(wrapper.text()).toContain('Enter a valid email address.')
-    expect(wrapper.text()).toContain('Use a password of 5 to 72 characters.')
+    expect(wrapper.text()).toContain('Use a password of 8 to 72 characters.')
     expect(wrapper.text()).toContain('Choose an avatar image.')
     expect(fake.callsTo('POST /api/students')).toHaveLength(0)
   })
@@ -221,7 +221,7 @@ describe('edit student', () => {
     await wrapper.find('form').trigger('submit.prevent')
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Use a password of 5 to 72 characters.')
+    expect(wrapper.text()).toContain('Use a password of 8 to 72 characters.')
     expect(fake.callsTo('PUT /api/students/:id')).toHaveLength(0)
   })
 

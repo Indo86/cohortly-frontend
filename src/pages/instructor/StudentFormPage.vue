@@ -69,8 +69,8 @@ const validate = () => {
   clientErrors.name = form.name.trim().length >= 5 ? '' : 'Enter a name of at least 5 characters.'
   clientErrors.email = /^\S+@\S+\.\S+$/.test(form.email.trim()) ? '' : 'Enter a valid email address.'
   clientErrors.password =
-    (!editing.value || typedPassword) && (form.password.length < 5 || form.password.length > 72)
-      ? 'Use a password of 5 to 72 characters.'
+    (!editing.value || typedPassword) && (form.password.length < 8 || form.password.length > 72)
+      ? 'Use a password of 8 to 72 characters.'
       : ''
   clientErrors.avatar = editing.value || avatar.value ? '' : 'Choose an avatar image.'
 
@@ -125,7 +125,7 @@ const submit = async () => {
             type="password"
             autocomplete="new-password"
             :required="!editing"
-            :hint="editing ? 'Leave empty to keep the current password.' : '5 to 72 characters. Share it with the student.'"
+            :hint="editing ? 'Leave empty to keep the current password.' : '8 to 72 characters. Share it with the student.'"
             :error="error('password')"
           />
           <ImageField
