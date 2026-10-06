@@ -59,8 +59,9 @@ Everything prefixed `VITE_` ends up in the public bundle: never put secrets in i
 
 The backend must be running and must allow this app's origin: its `FRONTEND_URL` has to be the address you open in
 the browser (default `http://localhost:5173`, which is why the dev server uses a strict port). To try the app locally
-without Midtrans, `npm run seed:demo` in the backend creates `instructor@demo.local` and `student@demo.local`
-(password `demo-password-123`, or `DEMO_PASSWORD`), with an active workspace.
+without Midtrans, `npm run seed:demo` in the backend creates a demo workspace: `demo.instructor@cohortly.local` and
+three students `demo.student1..3@cohortly.local` (password `CohortlyDemo123!`) with courses, progress and certificates
+(see the backend README, "Demo data", and `docs/demo-scenarios.md` there).
 
 ## Roles and entitlement
 
