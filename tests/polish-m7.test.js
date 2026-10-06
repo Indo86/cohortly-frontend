@@ -411,12 +411,12 @@ describe('accessibility of polished pages (axe, structural rules)', () => {
   it('profile pages and the payment result page', async () => {
     const a = await openInstructorApp('/instructor/profile', {})
 
-    await waitForText(a.wrapper, 'Account details cannot be changed here yet.')
+    await waitForText(a.wrapper, 'Your name and email cannot be changed here yet.')
     expect(await audit(a.wrapper)).toEqual([])
 
     const b = await openStudentApp('/student/profile', {})
 
-    await waitForText(b.wrapper, 'Account details cannot be changed here yet.')
+    await waitForText(b.wrapper, 'Your name and email cannot be changed here yet.')
     expect(await audit(b.wrapper)).toEqual([])
   })
 

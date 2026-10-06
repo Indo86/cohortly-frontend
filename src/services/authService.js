@@ -22,3 +22,11 @@ export const fetchMe = async () => {
 
   return response.data.data
 }
+
+// The signed-in user's own password. The account is the one of the current token (no user id is sent).
+// On success every existing token stops working, including the current one: the caller signs out.
+export const changePassword = async ({ currentPassword, newPassword }) => {
+  const response = await api.put('/api/me/password', { currentPassword, newPassword })
+
+  return response.data
+}

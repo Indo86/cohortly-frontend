@@ -30,6 +30,9 @@ const wrongPortal = ref(false)
 
 const { pending, error, run } = useAsyncAction(() => auth.signIn({ email: form.email.trim(), password: form.password }))
 
+// set by the change-password form after it signed the user out (no secret in the URL, only a notice)
+const passwordChanged = computed(() => route.query.passwordChanged === '1' && !error.value)
+
 const isInstructorPortal = computed(() => props.role === Roles.INSTRUCTOR)
 const otherPortal = computed(() => (isInstructorPortal.value ? R.STUDENT_SIGN_IN : R.INSTRUCTOR_SIGN_IN))
 const otherLabel = computed(() => ROLE_LABELS[isInstructorPortal.value ? Roles.STUDENT : Roles.INSTRUCTOR])
@@ -79,6 +82,7 @@ const submit = async () => {
     </p>
 
     <form class="mt-8 flex flex-col gap-6" novalidate @submit.prevent="submit">
+      <InlineAlert v-if="passwordChanged" tone="success">Your password has been changed. Please sign in again.</InlineAlert>
       <InlineAlert v-if="message" tone="danger">{{ message }}</InlineAlert>
       <InlineAlert v-if="wrongPortal" tone="warning" title="Wrong sign-in page">
         This is a {{ otherLabel.toLowerCase() }} account, so you have been signed out of this page.

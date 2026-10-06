@@ -39,6 +39,6 @@ const auth = useAuthStore()
         </dd>
       </div>
     </dl>
-    <p class="type-help mt-6 border-t border-line pt-4">Account details cannot be changed here yet.</p>
+    <p class="type-help mt-6 border-t border-line pt-4">Your name and email cannot be changed here yet.</p>
   </section>
 </template>
