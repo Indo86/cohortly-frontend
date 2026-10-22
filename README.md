@@ -25,23 +25,20 @@
   <a href="https://github.com/Indo86/cohortly-backend#fresh-setup">Backend setup guide</a>
 </p>
 
+
+
+
 <p align="center">
-  <a href="#project-preview"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4f8/512.gif" width="20" height="20" align="absmiddle" alt="📸"> Preview</a>
-  ·
-  <a href="#overview"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" width="20" height="20" align="absmiddle" alt="🌱"> Overview</a>
-  ·
-  <a href="#key-features"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2728/512.gif" width="20" height="20" align="absmiddle" alt="✨"> Features</a>
-  ·
-  <a href="#tech-stack"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4bb/512.gif" width="20" height="20" align="absmiddle" alt="💻"> Stack</a>
-  ·
-  <a href="#system-architecture"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" width="20" height="20" align="absmiddle" alt="⚙️"> Architecture</a>
-  ·
-  <a href="#getting-started"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" width="20" height="20" align="absmiddle" alt="🚀"> Start</a>
-  ·
-  <a href="#project-structure"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4e6/512.gif" width="20" height="20" align="absmiddle" alt="📦"> Structure</a>
-  ·
-  <a href="#engineering-highlights"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" width="20" height="20" align="absmiddle" alt="💡"> Highlights</a>
+  <a href="#project-preview">Preview</a> ·
+  <a href="#overview">Overview</a> ·
+  <a href="#key-features">Features</a> ·
+  <a href="#tech-stack">Tech Stack</a> ·
+  <a href="#system-architecture">Architecture</a> ·
+  <a href="#getting-started">Getting Started</a> ·
+  <a href="#project-structure">Structure</a> ·
+  <a href="#engineering-highlights">Highlights</a>
 </p>
+
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4f8/512.gif" width="32" height="32" align="absmiddle" alt="📸"> Project preview
 
