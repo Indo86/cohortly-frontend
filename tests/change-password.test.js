@@ -31,7 +31,8 @@ const fill = async (wrapper, { current = 'secret-pass-1', next = NEW, confirm = 
   await currentInput.setValue(current)
   await newInput.setValue(next)
   await confirmInput.setValue(confirm)
-  await wrapper.find('form').trigger('submit.prevent')
+  // the profile also holds the avatar form: submit the one that owns the password fields
+  await wrapper.findAll('form').find((form) => form.find('input[type="password"]').exists()).trigger('submit.prevent')
   await flushPromises()
 }
 

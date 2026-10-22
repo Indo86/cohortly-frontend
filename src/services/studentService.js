@@ -5,7 +5,7 @@ import { api } from './http.js'
 // [{ _id, name, photo_url, courses: [courseId] }] (courses = the courses the student is enrolled in)
 export const listStudents = async () => (await api.get('/api/students')).data.data
 
-// { _id, name, email }
+// { _id, name, email, photo_url }  (photo_url is null until an avatar is uploaded)
 export const getStudent = async (studentId) => (await api.get(`/api/students/${studentId}`)).data.data
 
 // Builds the multipart body. The password is only included when one was typed: a missing

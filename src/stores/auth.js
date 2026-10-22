@@ -19,7 +19,7 @@ import { clearToken, readToken, writeToken } from '@/services/session.js'
 //   uninitialized | unavailable | anonymous | authenticated-inactive | authenticated-active
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(readToken())
-  const user = ref(null) // { name, email }
+  const user = ref(null) // { name, email, photoUrl }
   const rawRole = ref(null) // backend value ("manager" | "student"); use `role` in the UI
   const role = ref(null) // normalized product role
   const accessStatus = ref(Access.NONE)
@@ -58,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     if (!normalized) throw new Error('This account type is not supported.')
 
-    user.value = { name: data.name, email: data.email }
+    user.value = { name: data.name, email: data.email, photoUrl: data.photo_url ?? null }
     rawRole.value = data.role
     role.value = normalized
     applyEntitlement({
@@ -66,6 +66,11 @@ export const useAuthStore = defineStore('auth', () => {
       accessStartsAt: data.accessStartsAt,
       accessExpiresAt: data.accessExpiresAt,
     })
+  }
+
+  // After the user changed their own avatar: the identity is otherwise only reloaded from /api/me.
+  const setPhotoUrl = (photoUrl) => {
+    if (user.value) user.value = { ...user.value, photoUrl: photoUrl ?? null }
   }
 
   // Forgets the session locally (there is no server-side logout: tokens are stateless).
@@ -183,5 +188,6 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     clearSession,
     applyEntitlement,
+    setPhotoUrl,
   }
 })

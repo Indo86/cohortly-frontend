@@ -27,7 +27,7 @@ describe('navigation without redundancy', () => {
   it.each([
     ['student', () => openStudentApp('/student')],
     ['instructor', () => openInstructorApp('/instructor')],
-  ])('the %s account menu has no Profile link (it is already in the sidebar) but keeps Sign out', async (_, open) => {
+  ])('the %s account menu holds Profile and Sign out, and the sidebar navigation does not repeat Profile', async (_, open) => {
     const { wrapper } = await open()
 
     await flushPromises()
@@ -35,8 +35,8 @@ describe('navigation without redundancy', () => {
     const menu = wrapper.find('details.account-menu')
 
     expect(menu.text()).toContain('Sign out')
-    expect(menu.text()).not.toContain('Profile')
-    expect(wrapper.find('nav[aria-label="Main"]').text()).toContain('Profile') // still reachable once, from the sidebar
+    expect(menu.text()).toContain('Profile')
+    expect(wrapper.find('nav[aria-label="Main"]').text()).not.toContain('Profile')
   })
 })
 

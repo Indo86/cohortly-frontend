@@ -127,11 +127,11 @@ describe('who can reach the learning pages', () => {
     expect(fake.calls.filter((call) => call.url.startsWith('/api/students-courses'))).toHaveLength(0)
   })
 
-  it('the student menu has Dashboard, My Courses, Certificates and Profile only', async () => {
+  it('the student menu has Dashboard, My Courses, Certificates only (Profile is in the account menu)', async () => {
     const { wrapper } = await openStudentApp('/student')
 
     await waitForText(wrapper, 'Welcome')
-    expect(wrapper.findAll('nav[aria-label="Main"] a').map((a) => a.text())).toEqual(['Dashboard', 'My Courses', 'Certificates', 'Profile'])
+    expect(wrapper.findAll('nav[aria-label="Main"] a').map((a) => a.text())).toEqual(['Dashboard', 'My Courses', 'Certificates'])
   })
 
   it('401 on a learning request ends the session and clears the cached learning data', async () => {

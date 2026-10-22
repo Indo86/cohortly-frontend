@@ -1,6 +1,7 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth.js'
 import { formatDateTime } from '@/utils/date.js'
+import AvatarForm from '@/components/account/AvatarForm.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import UserAvatar from '@/components/ui/UserAvatar.vue'
 
@@ -14,7 +15,8 @@ const auth = useAuthStore()
 
 <template>
   <section class="max-w-3xl border-t border-line py-8">
-    <div class="mb-8 flex items-center gap-4"><UserAvatar :name="auth.user?.name ?? ''" size="lg" /><div><h2 class="type-section-title">{{ auth.user?.name }}</h2><p class="type-meta mt-1">{{ auth.roleLabel }}</p></div></div>
+    <div class="mb-8 flex items-center gap-4"><UserAvatar :src="auth.user?.photoUrl ?? ''" :name="auth.user?.name ?? ''" size="lg" /><div><h2 class="type-section-title">{{ auth.user?.name }}</h2><p class="type-meta mt-1">{{ auth.roleLabel }}</p></div></div>
+    <AvatarForm />
     <dl class="account-ledger divide-y divide-line border-y border-line">
       <div class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr]">
         <dt class="text-sm text-ink-2">Name</dt>

@@ -350,6 +350,7 @@
   .lesson-prose pre { @apply max-w-full overflow-x-auto rounded-sm bg-paper-sunk p-4 font-mono text-sm; }
   .course-cover { background: var(--cover-ground); }
   .account-menu > summary::marker, .action-menu > summary::marker { content: ''; }
+  .account-menu[open] .account-chevron { transform: rotate(180deg); }
 }
 @media (min-width: 768px) {
   .setup-journey > li:not(:last-child)::after { left: 24px; right: -20px; top: 9px; bottom: auto; border-left: 0; border-top: 1px dashed var(--line-strong); }

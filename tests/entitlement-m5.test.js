@@ -96,7 +96,7 @@ describe('mid-session subscription loss on real M5 requests', () => {
     expect(auth.accessStatus).toBe('PENDING')
   })
 
-  it('after losing access, the instructor menu shows only billing and profile', async () => {
+  it('after losing access, the instructor menu shows only billing (Profile stays in the account menu)', async () => {
     const { router, wrapper } = await openWithPolicy('/instructor/courses', {
       routes: { 'GET /api/courses': reply(403, { message: 'x', code: 'ACCESS_NOT_ACTIVE', accessStatus: 'FAILED' }) },
     })
@@ -104,7 +104,7 @@ describe('mid-session subscription loss on real M5 requests', () => {
     await waitForRoute(router, R.INSTRUCTOR_BILLING)
     await waitForText(wrapper, 'Plan & Billing')
 
-    expect(wrapper.findAll('nav[aria-label="Main"] a').map((a) => a.text())).toEqual(['Plan & Billing', 'Profile'])
+    expect(wrapper.findAll('nav[aria-label="Main"] a').map((a) => a.text())).toEqual(['Plan & Billing'])
   })
 })
 

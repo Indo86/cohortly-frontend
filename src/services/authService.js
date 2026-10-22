@@ -30,3 +30,13 @@ export const changePassword = async ({ currentPassword, newPassword }) => {
 
   return response.data
 }
+
+// The signed-in user's own avatar (instructor or student). Multipart field "avatar", JPEG/PNG up to 2 MB.
+// Returns { photo_url }.
+export const updateAvatar = async (file) => {
+  const form = new FormData()
+
+  form.append('avatar', file)
+
+  return (await api.put('/api/me/avatar', form)).data.data
+}

@@ -2,7 +2,7 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { R } from '@/constants/routes.js'
-import { useStudentQuery, useStudentsQuery } from '@/composables/instructorQueries.js'
+import { useStudentQuery } from '@/composables/instructorQueries.js'
 import { useCreateStudent, useUpdateStudent } from '@/composables/instructorMutations.js'
 import { useRouteParam } from '@/composables/useRouteParam.js'
 import { ErrorKind, fieldErrors } from '@/services/apiError.js'
@@ -22,7 +22,6 @@ const studentId = useRouteParam('studentId')
 const editing = computed(() => Boolean(studentId.value))
 
 const student = useStudentQuery(studentId)
-const students = useStudentsQuery() // for the current avatar: the detail endpoint has no photo
 const create = useCreateStudent()
 const update = useUpdateStudent(studentId)
 const mutation = computed(() => (editing.value ? update : create))
@@ -44,7 +43,7 @@ watch(
   { immediate: true }
 )
 
-const currentPhoto = computed(() => students.data.value?.find((item) => item._id === studentId.value)?.photo_url ?? '')
+const currentPhoto = computed(() => student.data.value?.photo_url ?? '')
 
 const serverFields = computed(() => fieldErrors(mutation.value.error.value))
 const duplicateEmail = computed(() => mutation.value.error.value?.code === 'EMAIL_EXISTS')

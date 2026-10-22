@@ -45,7 +45,7 @@ describe('startup / session hydration', () => {
     expect(auth.rawRole).toBe('manager')
     expect(auth.isInstructor).toBe(true)
     expect(auth.isActive).toBe(true)
-    expect(auth.user).toEqual({ name: 'Test User', email: 'user@test.dev' })
+    expect(auth.user).toEqual({ name: 'Test User', email: 'user@test.dev', photoUrl: null })
     expect(auth.accessStartsAt).toBe('2026-05-01T00:00:00.000Z')
     expect(auth.accessExpiresAt).toBe('2026-06-01T00:00:00.000Z')
     expect(auth.needsPayment).toBe(false)

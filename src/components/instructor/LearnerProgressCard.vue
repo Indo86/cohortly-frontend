@@ -30,7 +30,7 @@ const lastActivity = computed(() => formatDateTime(props.learner.lastActivityAt)
 <template>
   <li class="card-row">
     <div class="flex items-start gap-3">
-      <UserAvatar :src="learner.photo_url" :name="learner.name" />
+      <UserAvatar :src="learner.photo_url ?? ''" :name="learner.name" />
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
           <h3 class="type-card-title truncate">{{ learner.name }}</h3>

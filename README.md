@@ -25,34 +25,62 @@
   <a href="https://github.com/Indo86/cohortly-backend#fresh-setup">Backend setup guide</a>
 </p>
 
-## 🖥️ Project preview
+<p align="center">
+  <a href="#project-preview"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4f8/512.gif" width="20" height="20" align="absmiddle" alt="📸"> Preview</a>
+  ·
+  <a href="#overview"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" width="20" height="20" align="absmiddle" alt="🌱"> Overview</a>
+  ·
+  <a href="#key-features"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2728/512.gif" width="20" height="20" align="absmiddle" alt="✨"> Features</a>
+  ·
+  <a href="#tech-stack"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4bb/512.gif" width="20" height="20" align="absmiddle" alt="💻"> Stack</a>
+  ·
+  <a href="#system-architecture"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" width="20" height="20" align="absmiddle" alt="⚙️"> Architecture</a>
+  ·
+  <a href="#getting-started"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" width="20" height="20" align="absmiddle" alt="🚀"> Start</a>
+  ·
+  <a href="#project-structure"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4e6/512.gif" width="20" height="20" align="absmiddle" alt="📦"> Structure</a>
+  ·
+  <a href="#engineering-highlights"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" width="20" height="20" align="absmiddle" alt="💡"> Highlights</a>
+</p>
 
-![Cohortly student dashboard showing a course in progress](./docs/images/student-dashboard.png)
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4f8/512.gif" width="32" height="32" align="absmiddle" alt="📸"> Project preview
 
-<details>
-<summary>More product views</summary>
+<table>
+  <tr>
+    <td colspan="2" align="center">
+      <img src="./docs/images/hero.png" alt="Cohortly landing page hero: Build a class. Teach your whole team."><br>
+      <sub><b>Landing page</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/student-dashboard.png" alt="Cohortly student dashboard showing a course in progress"><br>
+      <sub><b>Student dashboard</b></sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/course-editor.png" alt="Cohortly instructor lesson editor"><br>
+      <sub><b>Course authoring</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="./docs/images/ai-study-tools.png" alt="Cohortly lesson reader with AI-generated practice questions"><br>
+      <sub><b>Optional AI study tools</b></sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="./docs/images/certificate.png" alt="Cohortly course completion certificate"><br>
+      <sub><b>Completion certificate</b></sub>
+    </td>
+  </tr>
+</table>
 
-### Course authoring
-
-![Cohortly instructor lesson editor](./docs/images/course-editor.png)
-
-### Optional AI study tools
-
-![Cohortly lesson reader with AI-generated practice questions](./docs/images/ai-study-tools.png)
-
-### Completion certificate
-
-![Cohortly course completion certificate](./docs/images/certificate.png)
-
-</details>
-
-## Overview
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" width="32" height="32" align="absmiddle" alt="🌱"> Overview
 
 Cohortly is a B2B learning management interface for instructors and students in the same organization. Instructors structure courses, manage learners, monitor progress, and maintain assessments; students receive a focused learning path with a clear next action, completion history, and certificates.
 
 This repository contains the Vue 3 single-page application. Authentication, authorization, subscription access, progress calculations, quiz scoring, certificate issuance, payments, and optional AI generation remain authoritative in the separate [Cohortly backend](https://github.com/Indo86/cohortly-backend). The frontend is responsible for accessible interaction, navigation, server-state coordination, and truthful presentation of the API state.
 
-## ✨ Key features
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2728/512.gif" width="32" height="32" align="absmiddle" alt="✨"> Key features
 
 - **Instructor workspace** — Create draft courses, organize sections and text or YouTube lessons, publish eligible courses, enroll students, and review learner progress.
 - **Guided student experience** — Resume the backend-selected next lesson, navigate an ordered course outline, mark lessons complete or incomplete, and review completed material.
@@ -61,7 +89,7 @@ This repository contains the Vue 3 single-page application. Authentication, auth
 - **Hosted billing flow** — Start or renew a workspace through Midtrans without collecting payment-card data in the application.
 - **Optional AI assistance** — Provide lesson summaries, grounded Q&A, practice questions, and instructor-reviewed quiz drafts when the backend reports AI as enabled and available. AI output does not alter progress or assessment results.
 
-## Tech stack
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4bb/512.gif" width="32" height="32" align="absmiddle" alt="💻"> Tech stack
 
 | Area | Technologies |
 | --- | --- |
@@ -74,7 +102,7 @@ This repository contains the Vue 3 single-page application. Authentication, auth
 | Backend and database | Express 4, MongoDB, and Mongoose in a separate repository |
 | External integrations | Midtrans hosted checkout; OpenRouter-backed AI when enabled by the backend |
 
-## 🏗️ System architecture
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" width="32" height="32" align="absmiddle" alt="⚙️"> System architecture
 
 ```mermaid
 flowchart LR
@@ -108,7 +136,7 @@ flowchart LR
 
 The application treats the API as the source of truth. Route guards use backend-provided identity and entitlement, Vue Query owns remote data, and mutations invalidate only the affected query branches. A session change clears the entire query cache so data cannot leak between users.
 
-## 💡 Engineering highlights
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" width="32" height="32" align="absmiddle" alt="💡"> Engineering highlights
 
 - **Authentication is separate from entitlement.** A valid user may still have an inactive workspace. A `401` clears the session, while entitlement-specific `403` responses keep the identity and route the user to billing or the inactive-workspace screen.
 - **Progress and scoring are backend-authoritative.** The client never derives course completion, quiz scores, pass/fail state, or certificate eligibility. It renders the values and next activity returned by the API.
@@ -116,7 +144,7 @@ The application treats the API as the source of truth. Route guards use backend-
 - **Sensitive integrations stay outside the browser.** Midtrans handles payment details on its hosted page, AI provider keys and prompts live in the backend, and the student quiz payload never receives an answer key before submission.
 - **Accessibility is part of the application shell.** The interface includes skip links, route-change focus management, labelled controls, keyboard-safe dialogs and menus, reduced-motion behavior, semantic progress indicators, and automated axe checks.
 
-## 🚀 Getting started
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" width="32" height="32" align="absmiddle" alt="🚀"> Getting started
 
 ### Prerequisites
 
@@ -166,7 +194,7 @@ npm run preview
 
 The production bundle is written to `dist/`; the preview server also uses port `5173`.
 
-## 🧪 Testing
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2705/512.gif" width="32" height="32" align="absmiddle" alt="✅"> Testing
 
 ```bash
 npm run lint
@@ -178,7 +206,7 @@ Vitest runs unit and component tests in jsdom. The suite exercises route guards,
 
 For active development, use `npm run test:watch`. This repository currently has no committed end-to-end suite or CI workflow.
 
-## Project structure
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4e6/512.gif" width="32" height="32" align="absmiddle" alt="📦"> Project structure
 
 ```text
 .
@@ -199,7 +227,7 @@ For active development, use `npm run test:watch`. This repository currently has 
 └── vite.config.js          # Build, aliases, and test configuration
 ```
 
-## 📚 Related documentation
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4da/512.gif" width="32" height="32" align="absmiddle" alt="📚"> Related documentation
 
 - [Backend setup and domain documentation](https://github.com/Indo86/cohortly-backend#readme)
 - [Demo scenarios and seeded workflows](https://github.com/Indo86/cohortly-backend/blob/main/docs/demo-scenarios.md)

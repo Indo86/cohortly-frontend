@@ -41,26 +41,26 @@ describe('navigation contents (no dead links)', () => {
   it('shows the full instructor menu when the workspace is active', async () => {
     const { wrapper } = await appFor(instructor('ACTIVE'), '/instructor')
 
-    expect(navLabels(wrapper)).toEqual(['Dashboard', 'Courses', 'Students', 'Plan & Billing', 'Profile'])
+    expect(navLabels(wrapper)).toEqual(['Dashboard', 'Courses', 'Students', 'Plan & Billing'])
   })
 
   it.each(['NONE', 'PENDING', 'FAILED', 'EXPIRED'])('hides pages that need an active workspace when it is %s', async (state) => {
     const { wrapper } = await appFor(instructor(state), '/instructor/billing')
 
-    expect(navLabels(wrapper)).toEqual(['Plan & Billing', 'Profile'])
+    expect(navLabels(wrapper)).toEqual(['Plan & Billing'])
   })
 
   it('shows the student menu without any billing entry', async () => {
     const { wrapper } = await appFor(student('ACTIVE'), '/student')
 
     // Certificates: issued certificates are history, so the entry exists for every student
-    expect(navLabels(wrapper)).toEqual(['Dashboard', 'My Courses', 'Certificates', 'Profile'])
+    expect(navLabels(wrapper)).toEqual(['Dashboard', 'My Courses', 'Certificates'])
   })
 
-  it('a student with an inactive workspace only sees Certificates and Profile besides the blocked page', async () => {
+  it('a student with an inactive workspace only sees Certificates besides the blocked page', async () => {
     const { wrapper } = await appFor(student('EXPIRED'), '/student')
 
-    expect(navLabels(wrapper)).toEqual(['Certificates', 'Profile'])
+    expect(navLabels(wrapper)).toEqual(['Certificates'])
     expect(wrapper.text()).toMatch(/Learning is paused/)
   })
 

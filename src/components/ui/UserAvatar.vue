@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { stableHash } from '@/utils/courseArtwork.js'
 
 // Decorative avatar: the person's name is always shown next to it, so the image has an empty
@@ -11,6 +11,11 @@ const props = defineProps({
 })
 
 const failed = ref(false)
+
+// a new image (the user just changed it) gets its own chance to load
+watch(() => props.src, () => {
+  failed.value = false
+})
 
 const initials = computed(() =>
   props.name

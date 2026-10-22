@@ -164,7 +164,7 @@ describe('create student', () => {
 
 describe('edit student', () => {
   const routes = (extra = {}) => ({
-    'GET /api/students/:id': { _id: 's1', name: 'Ada Lovelace', email: 'ada@test.dev' },
+    'GET /api/students/:id': { _id: 's1', name: 'Ada Lovelace', email: 'ada@test.dev', photo_url: 'http://api.test/uploads/students/ada.png' },
     'GET /api/students': [studentRow({ _id: 's1', name: 'Ada Lovelace', photo_url: 'http://api.test/uploads/students/ada.png' })],
     'PUT /api/students/:id': {},
     ...extra,

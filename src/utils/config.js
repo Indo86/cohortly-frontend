@@ -12,7 +12,7 @@ export const configProblems = (env = import.meta.env) => {
 
       if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error('protocol')
     } catch {
-      problems.push('VITE_API_URL must be a full http(s) URL such as http://localhost:3000.')
+      problems.push('VITE_API_URL must be a full http(s) URL such as http://localhost:3001.')
     }
   }
 
